@@ -1,0 +1,13 @@
+.accordion>li, .accordion>li:last-child {
+  border: 0;
+}
+
+.accordion>li>div {
+  padding: 0;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.accordion>li>div>svg {
+  margin-right: 15px;
+}

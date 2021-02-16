@@ -1,0 +1,40 @@
+.button {
+  margin-left: 12px;
+  display: none;
+}
+
+.button::before{
+  content: '+';
+  display:inline;
+  margin-right: 10px;
+  font-size: 20px;
+  font-weight: 50;
+}
+
+.pagination {
+  z-index: 10000;
+}
+
+.pagination > div:first-child,
+.pagination > div:last-child > div:first-child {
+  visibility: hidden;
+  max-width: 0;
+}
+
+.input {
+  z-index: 0;
+}
+
+.input > label > div::before{
+  border: none;
+  border-radius: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  width: 100%;
+}
+
+.input > label > div:focus-within::before{
+  border-bottom: 2px solid #0062FF;
+}
