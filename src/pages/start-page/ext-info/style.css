@@ -8,6 +8,10 @@
   justify-content: flex-end;
 }
 
+.accordion>li>div>div {
+  font-size: 18px;
+}
+
 .accordion>li>div>svg {
-  margin-right: 15px;
+  margin-right: 8px;
 }

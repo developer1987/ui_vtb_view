@@ -28,7 +28,7 @@ export const StateLabel = styled.div`
   font-style: normal;
   font-weight: normal;
   font-size: 13px;
-  line-height: 16px;
+  line-height: 24px;
   font-feature-settings: 'cv03' on, 'cv04' on;
   color: #555A65;
   flex: none;
@@ -58,18 +58,27 @@ export const StateResultText = styled.div`
   margin: 0px 10px;
 `;
 
-export const IconStateResult = styled.div`
+export const IconStateResult = styled.div<{backgroundIcon?: string}>`
   padding: 4px 8px;
   position: static;
   width: auto;
   height: 24px;
   top: 0px;
-  background: #FFD7C3;
   border-radius: 12px;
   flex: none;
   order: 1;
   flex-grow: 0;
   margin: 0px 16px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 11px;
+  text-align: center;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  font-feature-settings: 'cv03' on, 'cv04' on;
+  color: #21242C;
+  flex: none;
 `;
 
 export const AppActionLink = styled.div`
@@ -100,15 +109,16 @@ ${({svgUrl}) => {
 `;
   }}
   background-size: cover;
-  margin-right: 12px;
-  width: 18px;
-  height: 18px;
+  margin-left: 12px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   color: blue;
-  filter: invert(50%) 
-    sepia(3%) saturate(1025%) hue-rotate(186deg) brightness(98%) contrast(82%);
+  filter: invert(26%) 
+    sepia(100%) saturate(3991%) hue-rotate(213deg) brightness(100%) contrast(107%);  
   &:active {
     filter: invert(27%) sepia(64%) 
     saturate(6802%) hue-rotate(215deg) brightness(106%) contrast(107%);
   }
 `;
+

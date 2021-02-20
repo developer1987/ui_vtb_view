@@ -1,0 +1,16 @@
+.iconState {
+  margin-left: 8px;
+  background: #FFD4D4;
+}
+
+.error {
+  background: #FFD7C3;
+}
+
+.done {
+  background: #B6F1C9;
+}
+
+.decline {
+  background: #FFD4D4;
+}

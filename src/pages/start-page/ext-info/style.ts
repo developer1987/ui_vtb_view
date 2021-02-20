@@ -1,16 +1,21 @@
 import styled from 'styled-components';
 
 export const Caption = styled.div`
-  font-size: 15px;
+  font-size: 18px;
+  font-family: VTB Group UI;
+  font-style: normal;
   font-weight: 600;
-  line-height: 20px;
+  line-height: 24px;
+  height: 24px;
   margin-top: 24px;
+  font-feature-settings: 'tnum' on, 'lnum' on, 'cv04' on, 'cv03' on;
+  color: #22242A;
 `;
 
 export const BlockView = styled.div` 
   display: block;
   flex-direction: row;
-  padding: 0px 12px 22px 12px;
+  padding: 0px 24px 22px 24px;
   position: static;
   width: auto;
   border-radius: 4px;

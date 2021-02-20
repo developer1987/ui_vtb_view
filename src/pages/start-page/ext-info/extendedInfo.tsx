@@ -4,7 +4,6 @@ const styles = require('./style.css');
 import {Accordion} from '@openvtb/react-ui-kit';
 import {TextInfo} from 'src/components/text-info';
 import {Row, Col} from 'src/components/layout';
-import RefElements from './ref-elements';
 import {IAppAttributes, IAppTransition} from 'src/data-layer/reference/types';
 import AppTransition from './ref-elements/appTransition';
 

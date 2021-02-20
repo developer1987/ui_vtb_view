@@ -173,7 +173,7 @@ function formatDate(date:Date) {
   if (dd < 10) dd = '0' + dd;
   let mm:any = date.getMonth() + 1;
   if (mm < 10) mm = '0' + mm;
-  let yy:any = date.getFullYear() % 100;
+  let yy:any = date.getFullYear();
   if (yy < 10) yy = '0' + yy;
   let HH:any = date.getHours()*1;
   if (HH < 10) HH = '0' + HH;
