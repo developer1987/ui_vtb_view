@@ -6,31 +6,31 @@ import DataTable from 'src/components/table';
 import DeleteConfirm from 'src/pages/modals/delete-confirm';
 import EditReference from 'src/pages/modals/edit-reference';
 import ExtendedInfo from './ext-info';
+import SearchApp from '../modals/search-app';
 
 interface StartPageProps {
   findApplicationsByParams: any
   applications: any
   refIsLoading: boolean
-  removeReferenceById: any
-  getReferenceItems: any
-  deleteReferenceItem: any
 }
 
 function StartPage(props: StartPageProps) {
-  const {findApplicationsByParams, applications, refIsLoading/* ,
-  removeReferenceById, getReferenceItems, deleteReferenceItem*/} = props;
+  const {findApplicationsByParams, applications, refIsLoading} = props;
   const [delModalParams, setDelModalParams] = useState<any>({opened: false});
   const [editModalParams, setEditModalParams] = useState<any>({opened: false});
+  const [searchModalParams, setSearchModalParams] = useState<any>({opened: false});
   const editRow = (item: any) => {
     console.log('edit...');
     setEditModalParams({...item, opened: true});
   };
+  const searchApp = (item: any) => {
+    console.log('edit...');
+    setSearchModalParams({...item, opened: true});
+  };
   return (
     <div>
       <DataTable
-        addCaption=""
         dataIsLoading={refIsLoading}
-        addLocation="/input-reference"
         firstColLink={true}
         caption="Витрина заявок"
         editRow={editRow}
@@ -72,6 +72,13 @@ function StartPage(props: StartPageProps) {
         confirm={(params: any) => {
           console.log('delete...' + params.id);
           setDelModalParams({opened: false});
+        }}/>}
+      {searchModalParams.opened && <SearchApp
+        params={searchModalParams}
+        onColseRequest={setSearchModalParams}
+        confirm={(params: any) => {
+          console.log('search...' + params.id);
+          setSearchModalParams({opened: false});
         }}/>}
       {editModalParams.opened && <EditReference
         params={editModalParams}

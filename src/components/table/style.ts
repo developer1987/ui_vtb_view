@@ -28,8 +28,8 @@ export const RowRight = styled.div`
 export const SearchPanel = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-end;
+  align-items: right;
 `;
 
 export const Wrapper = styled.div`

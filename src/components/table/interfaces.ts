@@ -15,9 +15,6 @@ export interface IProps {
   }[]
   dataIsLoading: boolean
   method: any
-  addLocation: any
-  pushAction: any
-  addCaption: string
   firstColLink?: boolean
   editRow?: any
   extendedInfo?: any

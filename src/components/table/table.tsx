@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import * as Actions from 'src/data-layer/system/actionCreators';
 import {connect} from 'react-redux';
-import {PaginationComplex, Input, Spinner, Link}
+import {PaginationComplex, Spinner, Link}
   from '@openvtb/react-ui-kit';
 import {
   Wrapper, Table, TitleRow, Caption, RowRight, SearchPanel, THead, TBody, TRow,
@@ -12,18 +12,18 @@ import arrowDownIcon from
   '@openvtb/admiral-icons/build/system/ChevronDownOutline.svg';
 import arrowUpIcon from
   '@openvtb/admiral-icons/build/system/ChevronUpOutline.svg';
-import searchIcon from
-  '@openvtb/admiral-icons/build/system/SearchOutline.svg';
 
 import {IProps} from './interfaces';
+import {FilterButton} from '../FilterButton/FilterButton';
+import {ExportListButton} from '../ExportListButton/ExportListButton';
+import {SearchButton} from '../SearchButton/SearchButton';
 
 function DataTable(props: IProps) {
   const {caption, headerElements, dataIsLoading, data, actions, method,
-    addLocation, pushAction, addCaption, firstColLink, editRow,
-    extendedInfo} = props;
+    firstColLink, editRow, extendedInfo} = props;
   const content = data.content || [];
   const totalElements = data.totalElements || 1;
-  const [searchValue, setSearchValue] = useState('');
+  // const [searchValue, setSearchValue] = useState('');
   const [resizedHeader, setResizedHeader] = useState<any>(null);
   const sortOptions = headerElements.reduce((acc, curr)=> {
     acc[curr.fieldName] = 'desc';
@@ -73,36 +73,9 @@ function DataTable(props: IProps) {
       </TitleRow>
       <Wrapper>
         <SearchPanel>
-          <Input.Text
-            id="edSearch"
-            placeholder="Искать в таблице"
-            className={styles.input}
-            value={searchValue}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                setPagingParams({
-                  ...pagingParams,
-                  page: 0,
-                  name: searchValue,
-                  // sysname: searchValue
-                });
-              }
-            }}
-            icon={<Icon title="Поиск"
-              svgUrl={searchIcon}
-              onClick={() => {
-                setPagingParams({
-                  ...pagingParams,
-                  page: 0,
-                  name: searchValue,
-                  // sysname: searchValue
-                });
-              }}/>}
-            size="micro"
-            onChange={(event, value) => {
-              setSearchValue(value);
-            }}
-          />
+          <FilterButton/>
+          <ExportListButton/>
+          <SearchButton/>
         </SearchPanel>
         <Table colSize={headerElements.length}>
           <THead onMouseMove={(e) => {
