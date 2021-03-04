@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Modal, Button, Input} from '@openvtb/react-ui-kit';
 import {Col, Row} from 'src/components/layout';
 
@@ -11,27 +11,14 @@ interface EdReferenceProps {
 
 function SearchApp(props: EdReferenceProps) {
   const {params, confirm, onColseRequest} = props;
-  const [controlErrors, setControlErrors] = useState<any>([]);
   const [name, setReferenceName] = useState(params.name);
   const [sysname, setReferenceSysname] = useState(params.sysname);
   const [description, setReferenceDescription] =
   useState(params.description);
 
-
-  const checkRequiredControls = (controls: string[]) => {
-    const errorControls: any = {};
-    let hasErrors = false;
-    controls.forEach((control) => {
-      if (eval(control) === '' || eval(control) === undefined) {
-        errorControls[control] = 'error';
-        hasErrors = true;
-      } else {
-        errorControls[control] = 'default';
-      }
-    });
-    setControlErrors(errorControls);
-    return hasErrors;
-  };
+  useEffect(() => {
+    document.querySelector('#edBirthday').setAttribute('type', 'date');
+  }, []);
 
   return (
     <Modal
@@ -47,7 +34,6 @@ function SearchApp(props: EdReferenceProps) {
             label="Номер заявки"
             value={name}
             size="micro"
-            status={controlErrors.name}
             onChange={(event, value) => {
               setReferenceName(value);
               // pushToWizard('name', value);
@@ -60,7 +46,6 @@ function SearchApp(props: EdReferenceProps) {
             label="Фамилия"
             value={name}
             size="micro"
-            status={controlErrors.name}
             onChange={(event, value) => {
               setReferenceName(value);
               // pushToWizard('name', value);
@@ -75,7 +60,6 @@ function SearchApp(props: EdReferenceProps) {
             label="Имя"
             value={sysname}
             size="micro"
-            status={controlErrors.sysname}
             onChange={(event, value) => {
               setReferenceSysname(value);
               // pushToWizard('sysname', value);/
@@ -88,7 +72,6 @@ function SearchApp(props: EdReferenceProps) {
             label="Отчество"
             value={sysname}
             size="micro"
-            status={controlErrors.sysname}
             onChange={(event, value) => {
               setReferenceSysname(value);
               // pushToWizard('sysname', value);/
@@ -97,13 +80,12 @@ function SearchApp(props: EdReferenceProps) {
         </Col>
       </Row>
       <Row>
-        <Col col={12}>
+        <Col col={6}>
           <Input.Text
-            id="edDescription"
+            id="edBirthday"
             label="Дата рождения"
             value={description}
             size="micro"
-            status={controlErrors.description}
             onChange={(event, value) => {
               setReferenceDescription(value);
               // pushToWizard('description', value);
@@ -120,9 +102,6 @@ function SearchApp(props: EdReferenceProps) {
           style={{marginLeft: '16px'}}
           kind="primary" size="small" type="button"
           onClick={()=>{
-            if (checkRequiredControls(['name', 'sysname'])) {
-              return;
-            }
             confirm(params);
           }}
         >Применить</Button>

@@ -9,9 +9,9 @@ export function pushAction(to: string) {
 
 export function goBackAction() {
   return function(dispatch: Dispatch) {
-    return new Promise<void>(function(resolve) {
+    return new Promise(function(resolve) {
       dispatch(goBack());
-      resolve();
+      resolve(true);
     });
   };
 }

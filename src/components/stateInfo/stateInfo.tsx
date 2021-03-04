@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React from 'react';
 import {StateName, IconStateResult, StateLabel, Icon} from './style';
-import {IAppTransition} from '../../data-layer/reference/types';
+import {IAppTransition} from '../../data-layer/application/types';
 import {BlockView} from 'src/pages/start-page/ext-info/style';
 import {TextInfo} from '../text-info';
 import {Link} from '@openvtb/react-ui-kit';

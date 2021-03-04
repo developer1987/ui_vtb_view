@@ -8,7 +8,7 @@ import {
   IReferenceItem,
   IApplication
 } from './types';
-import {sortBy} from 'src/components/table/helpers';
+import {sortBy} from 'src/helpers/sorting';
 
 export function getReferences(params: any) {
   return async function(dispatch: Dispatch) {

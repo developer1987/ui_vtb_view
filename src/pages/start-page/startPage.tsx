@@ -1,12 +1,9 @@
 /* eslint-disable max-len */
 import React, {useState} from 'react';
-import * as Actions from 'src/data-layer/reference/actionCreators';
+import * as Actions from 'src/data-layer/application/actionCreators';
 import {connect} from 'react-redux';
 import DataTable from 'src/components/table';
-import DeleteConfirm from 'src/pages/modals/delete-confirm';
-import EditReference from 'src/pages/modals/edit-reference';
 import ExtendedInfo from './ext-info';
-import SearchApp from '../modals/search-app';
 
 interface StartPageProps {
   findApplicationsByParams: any
@@ -16,24 +13,14 @@ interface StartPageProps {
 
 function StartPage(props: StartPageProps) {
   const {findApplicationsByParams, applications, refIsLoading} = props;
-  const [delModalParams, setDelModalParams] = useState<any>({opened: false});
-  const [editModalParams, setEditModalParams] = useState<any>({opened: false});
-  const [searchModalParams, setSearchModalParams] = useState<any>({opened: false});
-  const editRow = (item: any) => {
-    console.log('edit...');
-    setEditModalParams({...item, opened: true});
-  };
-  const searchApp = (item: any) => {
-    console.log('edit...');
-    setSearchModalParams({...item, opened: true});
-  };
+  const [setProcessingParams] = useState<any>({opened: false});
   return (
     <div>
       <DataTable
         dataIsLoading={refIsLoading}
         firstColLink={true}
         caption="Витрина заявок"
-        editRow={editRow}
+        editRow={setProcessingParams}
         extendedInfo={ExtendedInfo}
         method={(params: any) => findApplicationsByParams(params)}
         headerElements={[
@@ -46,47 +33,8 @@ function StartPage(props: StartPageProps) {
         ]}
         actions={[
           {caption: 'Обработать', href: '#', type: 'link'},
-          // {caption: 'Список связей', href: '#', type: 'link'},
-          // {caption: 'Изменить', href: '#', type: 'icon', svg: editIcon,
-          //   onClick: editRow},
-          // {caption: 'Удалить', href: '#', type: 'icon', svg: trashIcon,
-          //   onClick: (item: any) => {
-          //     setDelModalParams({...item, opened: true});
-          //     /* if (confirm(`Вы уверены что хотите удалить "${item.name}"?`)) {
-          //       removeReferenceById(item.id)
-          //           .then(getReferenceItems({referenceId: item.id})
-          //               .then((items:any) => {
-          //                 items.forEach((itm: any) => {
-          //                   itm.id >=1 && deleteReferenceItem(itm.id);
-          //                 });
-          //               })
-          //               .then(refresh)
-          //           );
-          //     }*/
-          //   }}
         ]}
         data={applications.data}/>
-      {delModalParams.opened && <DeleteConfirm
-        params={delModalParams}
-        onColseRequest={setDelModalParams}
-        confirm={(params: any) => {
-          console.log('delete...' + params.id);
-          setDelModalParams({opened: false});
-        }}/>}
-      {searchModalParams.opened && <SearchApp
-        params={searchModalParams}
-        onColseRequest={setSearchModalParams}
-        confirm={(params: any) => {
-          console.log('search...' + params.id);
-          setSearchModalParams({opened: false});
-        }}/>}
-      {editModalParams.opened && <EditReference
-        params={editModalParams}
-        onColseRequest={setEditModalParams}
-        confirm={(params: any) => {
-          console.log('save...' + params.id);
-          setEditModalParams({opened: false});
-        }}/>}
     </div>
   );
 }

@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
 import {generateApplicationEntry} from './faker';
-import {IApplication} from '../data-layer/reference/types';
+import {IApplication} from '../data-layer/application/types';
 
 interface IApplicationIndexed {
   [key: string]: IApplication;

@@ -15,7 +15,7 @@ import {v4 as uuidv4} from 'uuid';
 const faker = require('faker');
 faker.locale = 'ru';
 // eslint-disable-next-line max-len
-import {IApplication, IAppTransition, IAppAttributes} from '../data-layer/reference/types';
+import {IApplication, IAppTransition, IAppAttributes} from '../data-layer/application/types';
 // Состояния
 const stateAll = [
   'Жесткий отказ',
@@ -24,6 +24,7 @@ const stateAll = [
   'Одобрено',
   'Кредит выдан'
 ];
+
 // Сервис обработки
 const processingServiceAll = [
   'МС Заявка',
@@ -219,8 +220,8 @@ export function generateAppAttributes(): IAppAttributes {
     citizenship: 'РОССИЯ',
     isResident: 'Да',
     isSalaryClient: 'Нет',
-    passportRF: 'Серия 76 52 № 984332 , выдан 01.01.2019 УФМС России по Ярославской области код подразделения 150-172',
-    passportForeign: 'Серия 4323 № 12234 , выдан 11.11.2020 ОУФМС код подразделения 760-123',
+    passportRF: 'Серия 76 52 № 984332, выдан 01.01.2019 УФМС России по Ярославской области код подразделения 150-172',
+    passportForeign: 'Серия 43 23 № 122349, выдан 11.11.2020 ОУФМС код подразделения 760-123',
     factRegistrationAddress: generateAddress(),
     permanentRegistrationAddress: generateAddress(),
     clientMobilePhone: '+7(909)285-56-33',

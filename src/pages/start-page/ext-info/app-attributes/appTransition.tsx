@@ -1,5 +1,5 @@
 import React from 'react';
-import {IAppTransition} from 'src/data-layer/reference/types';
+import {IAppTransition} from 'src/data-layer/application/types';
 import {StateInfo} from 'src/components/stateInfo';
 
 interface AppTransitionProps {

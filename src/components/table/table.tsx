@@ -17,6 +17,9 @@ import {IProps} from './interfaces';
 import {FilterButton} from '../FilterButton/FilterButton';
 import {ExportListButton} from '../ExportListButton/ExportListButton';
 import {SearchButton} from '../SearchButton/SearchButton';
+import SearchApp from 'src/pages/modals/search-app';
+import FilterApp from 'src/pages/modals/filter-app';
+import {IFilterParams, ISearchParams} from '../../data-layer/application/types';
 
 function DataTable(props: IProps) {
   const {caption, headerElements, dataIsLoading, data, actions, method,
@@ -29,8 +32,24 @@ function DataTable(props: IProps) {
     acc[curr.fieldName] = 'desc';
     return acc;
   }, {});
+  const searchParamsDefault = {
+    documentNumber: '',
+    clientLastNameSearch: '',
+    clientFirstNameSearch: '',
+    clientMiddleNameSearch: '',
+    clientBirthdaySearch: new Date(),
+  };
+  const filterParamsDefault = {
+    perionAppFilter: 'intevalDateAll',
+    viewAppFilter: 'viewAppBoard',
+    stateAppItemsFilter: 'stateAll',
+  };
   const [sortDirection, setSortDirection] = useState<any>(sortOptions);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchModalParams, setSearchModalParams] = useState<ISearchParams>({
+    ...searchParamsDefault, opened: false});
+  const [filterModalParams, setFilterModalParams] = useState<IFilterParams>({
+    ...filterParamsDefault, opened: false});
   const [rightPanelParams, setRightPanelParams] = useState<any>({
     show: false
   });
@@ -46,6 +65,15 @@ function DataTable(props: IProps) {
       ...pagingParams,
       sort: `${fieldName},${direction}`
     });
+  };
+  const searchApp = (item: any) => {
+    console.log('search...');
+    setSearchModalParams({...item, opened: true});
+  };
+
+  const filterApp = (item: any) => {
+    console.log('filter...');
+    setFilterModalParams({...item, opened: true});
   };
 
   useEffect(() => {
@@ -73,9 +101,9 @@ function DataTable(props: IProps) {
       </TitleRow>
       <Wrapper>
         <SearchPanel>
-          <FilterButton/>
+          <FilterButton onClick={filterApp}/>
           <ExportListButton/>
-          <SearchButton/>
+          <SearchButton onClick={searchApp}/>
         </SearchPanel>
         <Table colSize={headerElements.length}>
           <THead onMouseMove={(e) => {
@@ -181,6 +209,20 @@ function DataTable(props: IProps) {
           <Nodata>Нет данных</Nodata>}
         </div>
       </Wrapper>
+      {searchModalParams.opened && <SearchApp
+        params={searchModalParams}
+        onColseRequest={setSearchModalParams}
+        confirm={(params: any) => {
+          console.log('search...' + params.id);
+          setSearchModalParams({opened: false});
+        }}/>}
+      {filterModalParams.opened && <FilterApp
+        params={filterModalParams}
+        onColseRequest={setFilterModalParams}
+        confirm={(params: any) => {
+          console.log('filter...' + params.id);
+          setFilterModalParams({opened: false});
+        }}/>}
     </>
   );
 }

@@ -1,4 +1,4 @@
-import {SortingOrder} from 'src/data-layer/reference/types';
+import {SortingOrder} from 'src/data-layer/application/types';
 
 export function sortBy<T>(column: keyof T, order: SortingOrder) {
   return (a: T, b: T) => {

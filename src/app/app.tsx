@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Switch,
   Route, RouteComponentProps, useRouteMatch} from 'react-router-dom';
 import {routes, IRouter} from 'src/routes';
-import * as Actions from 'src/data-layer/user/actionCreators';
+import * as Actions from 'src/data-layer/system/actionCreators';
 import '../assets/style/fonts.css';
 import {GlobalStyle} from '../assets/normalize';
 
@@ -11,18 +11,11 @@ import ScrollBar from 'src/components/scroll-bar';
 
 export interface MainProps {
   isFederate: boolean
-  user: any
-  pushAction: any
-  signOut: any
-  userName: string
 }
 
-const App = (props: MainProps) => {
-  const {/* user, signOut, */pushAction, isFederate} = props;
+export const App = (props: MainProps) => {
+  const {isFederate} = props;
   const {path} = useRouteMatch();
-  const getActiveUrl = (list: any[]) => {
-    return list.filter(item => item.active === true)[0].to;
-  };
   return (
     <div style={{backgroundColor: '#EDF5FF'}}>
       <GlobalStyle />
@@ -46,11 +39,3 @@ const App = (props: MainProps) => {
     </div>
   );
 };
-
-const mapStateToProps = (state: any) => {
-  return ({
-    user: state.userReducer.user
-  });
-};
-
-export default connect(mapStateToProps, Actions)(App);
