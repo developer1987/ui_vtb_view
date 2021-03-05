@@ -20,7 +20,6 @@ export function getSellersFilterDefaults(): ApplicationFilter {
 }
 
 interface FilterApplicationProps {
-  initialValues: ApplicationFilter;
   params: any
   confirm: any
   onColseRequest: any
@@ -30,7 +29,7 @@ function FilterApp(props: FilterApplicationProps) {
   const {params, confirm, onColseRequest} = props;
   const [name, setReferenceName] = useState(params.name);
   const [sysname, setReferenceSysname] = useState(params.sysname);
-  const [radioValue, setRadioValue] = useState('intervalDateAll');
+  const [radioValue, setRadioValue] = useState(params.radioValue);// example
   const [radioValue2, setRadioValue2] = useState('viewAppBoard');
   const [description, setReferenceDescription] =
   useState(params.description);

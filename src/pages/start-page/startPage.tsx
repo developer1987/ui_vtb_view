@@ -8,16 +8,16 @@ import ExtendedInfo from './ext-info';
 interface StartPageProps {
   findApplicationsByParams: any
   applications: any
-  refIsLoading: boolean
+  appIsLoading: boolean
 }
 
 function StartPage(props: StartPageProps) {
-  const {findApplicationsByParams, applications, refIsLoading} = props;
+  const {findApplicationsByParams, applications, appIsLoading} = props;
   const [setProcessingParams] = useState<any>({opened: false});
   return (
     <div>
       <DataTable
-        dataIsLoading={refIsLoading}
+        dataIsLoading={appIsLoading}
         firstColLink={true}
         caption="Витрина заявок"
         editRow={setProcessingParams}
@@ -28,7 +28,7 @@ function StartPage(props: StartPageProps) {
           {name: 'Дата подачи', fieldName: 'creationDateStr'},
           {name: 'ФИО клиента', fieldName: 'clientFIO'},
           // {name: 'Сервис обработки', fieldName: 'processingService'},
-          {name: 'Статус', fieldName: 'state'},
+          {name: 'Статус', fieldName: 'stateName'},
           {name: 'ФИО Сотрудника', fieldName: 'employeeFIO'}
         ]}
         actions={[
@@ -42,7 +42,7 @@ function StartPage(props: StartPageProps) {
 const mapStateToProps = (state: any) => {
   return {
     applications: state.applicationsReducer.applications || {data: {}},
-    refIsLoading: state.applicationsReducer.refIsLoading || false
+    appIsLoading: state.applicationsReducer.appIsLoading || false
   };
 };
 

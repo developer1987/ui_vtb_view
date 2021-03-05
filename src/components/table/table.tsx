@@ -26,7 +26,6 @@ function DataTable(props: IProps) {
     firstColLink, editRow, extendedInfo} = props;
   const content = data.content || [];
   const totalElements = data.totalElements || 1;
-  // const [searchValue, setSearchValue] = useState('');
   const [resizedHeader, setResizedHeader] = useState<any>(null);
   const sortOptions = headerElements.reduce((acc, curr)=> {
     acc[curr.fieldName] = 'desc';
@@ -214,14 +213,14 @@ function DataTable(props: IProps) {
         onColseRequest={setSearchModalParams}
         confirm={(params: any) => {
           console.log('search...' + params.id);
-          setSearchModalParams({opened: false});
+          setSearchModalParams({...params, opened: false});
         }}/>}
       {filterModalParams.opened && <FilterApp
         params={filterModalParams}
         onColseRequest={setFilterModalParams}
         confirm={(params: any) => {
           console.log('filter...' + params.id);
-          setFilterModalParams({opened: false});
+          setFilterModalParams({...params, opened: false});
         }}/>}
     </>
   );

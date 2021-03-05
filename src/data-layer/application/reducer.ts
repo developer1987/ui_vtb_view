@@ -19,12 +19,12 @@ const applicationReducer = (
     case actionTypes.GET_APPLICATIONS:
       return {
         ...state,
-        refIsLoading: true
+        appIsLoading: true
       };
     case actionTypes.GET_APPLICATIONS_SUCCESS:
       return {
         ...state,
-        refIsLoading: false,
+        appIsLoading: false,
         applications: action.applications,
         totalPages: action.totalPages
       };

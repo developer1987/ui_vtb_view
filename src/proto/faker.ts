@@ -16,14 +16,29 @@ const faker = require('faker');
 faker.locale = 'ru';
 // eslint-disable-next-line max-len
 import {IApplication, IAppTransition, IAppAttributes} from '../data-layer/application/types';
-// Состояния
 const stateAll = [
   'Жесткий отказ',
   'На принятии решения РМ',
   'Верификация ОД',
   'Одобрено',
-  'Кредит выдан'
+  'Кредит выдан',
 ];
+
+const stateSysName = [
+  'approveRM',
+  'stateHardCancel',
+  'stateVerificationOD',
+  'stateDealApproved',
+  'stateCreditIssue',
+];
+
+const stateMap: {[key: string]: string; } = {
+  'approveRM': 'На принятии решения РМ',
+  'stateHardCancel': 'Жесткий отказ',
+  'stateVerificationOD': 'Верификация ОД',
+  'stateDealApproved': 'Одобрено',
+  'stateCreditIssue': 'Кредит выдан'
+};
 
 // Сервис обработки
 const processingServiceAll = [
@@ -126,7 +141,7 @@ function getRandom(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function getRandomElement(coll: any[]) {
+function getRandomElement(coll: any[]): string {
   return coll[getRandom(0, coll.length - 1)];
 }
 
@@ -154,6 +169,7 @@ export function generateDate() {
 
 export function generateApplicationEntry(): IApplication {
   const date = generateDate();
+  const stateSysNameCurrent = getRandomElement(stateSysName);
   return {
     uuid: uuidv4(),
     id: generateNumberString(8),
@@ -162,7 +178,8 @@ export function generateApplicationEntry(): IApplication {
     creationDateStr: date.toLocaleDateString(),
     clientFIO: generateFIO(),
     processingService: getRandomElement(processingServiceAll),
-    state: getRandomElement(stateAll),
+    stateSysName: stateSysNameCurrent,
+    stateName: stateMap[stateSysNameCurrent],
     employeeFIO: generateFIO(),
     appTransition: generateArray(getRandom(5, 10), () => generateHistoryDetails()),
     appAttributes: generateAppAttributes()

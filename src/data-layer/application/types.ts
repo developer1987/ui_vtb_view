@@ -6,7 +6,8 @@ export interface IApplication {
   creationDateStr: string
   clientFIO: string
   processingService: string
-  state: string
+  stateSysName: string
+  stateName: string
   employeeFIO: string
   appTransition: IAppTransition[]
   appAttributes: IAppAttributes
@@ -82,8 +83,6 @@ export type SortingOrder = 'asc' | 'desc';
 
 export type ApplicationState = {
   applications: IApplication[]
-  refEditRows: IReferenceItem[]
-  refEditHeader: any
 }
 
 export type ApplicationAction =
