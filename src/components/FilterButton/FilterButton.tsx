@@ -3,7 +3,7 @@ import filterIcon from '@openvtb/admiral-icons/build/system/FilterOutline.svg';
 
 export const FilterButton = styled.button.attrs({
   type: 'button',
-  children: 'Фильтры',
+  children: 'Фильтры'
 })`
   appearance: none;
   font: revert;

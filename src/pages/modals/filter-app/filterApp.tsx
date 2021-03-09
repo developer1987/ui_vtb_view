@@ -1,38 +1,25 @@
 import React, {useMemo, useState} from 'react';
 import {Modal, Button, MultiSelect} from '@openvtb/react-ui-kit';
 import {Col, Row} from 'src/components/layout';
-import {itemsToValues, listToItems} from '../../../helpers/selectItems';
+import {listToItems} from '../../../helpers/selectItems';
 import {StateAppFilterMap} from 'src/constants/lang';
 import {Container, RadioLabel, StyledRadioGroup} from './style';
-
-export interface ApplicationFilter {
-  periodAppFilter: string;
-  viewAppFilter: string;
-  stateAppFilter: string[];
-}
-
-export function getSellersFilterDefaults(): ApplicationFilter {
-  return {
-    periodAppFilter: '',
-    viewAppFilter: '',
-    stateAppFilter: [],
-  };
-}
+import {IFilterParams, stateAppFilter} from 'src/data-layer/application/types';
 
 interface FilterApplicationProps {
-  params: any
+  params: IFilterParams
   confirm: any
-  onColseRequest: any
+  onCloseRequest: any
 }
 
 function FilterApp(props: FilterApplicationProps) {
-  const {params, confirm, onColseRequest} = props;
-  const [name, setReferenceName] = useState(params.name);
-  const [sysname, setReferenceSysname] = useState(params.sysname);
-  const [radioValue, setRadioValue] = useState(params.radioValue);// example
-  const [radioValue2, setRadioValue2] = useState('viewAppBoard');
-  const [description, setReferenceDescription] =
-  useState(params.description);
+  const {params, confirm, onCloseRequest} = props;
+  const [periodAppFilter, setPeriodAppFilter] =
+  useState(params.periodAppFilter);
+  const [viewAppBoardFilter, setViewAppFilter] =
+  useState(params.viewAppBoardFilter);
+  const [stateAppItemsFilter, setStateAppFilter] =
+  useState(params.stateAppItemsFilter);
 
   const IntervalDateFilterList = useMemo(
       () => [
@@ -56,6 +43,15 @@ function FilterApp(props: FilterApplicationProps) {
       Object.entries(StateAppFilterMap),
       ([value, label]) => [label, value]
   );
+  StateAppFilterList.unshift({label: 'Все', value: 'stateAll'});
+
+  const clearSearchParams = () => {
+    debugger;
+    setPeriodAppFilter('intervalDateAll');
+    setViewAppFilter('viewAppBoard');
+    setStateAppFilter([{label: 'Все',
+      value: 'stateAll'}]);
+  };
 
   return (
     <Modal
@@ -63,17 +59,17 @@ function FilterApp(props: FilterApplicationProps) {
       size="big"
       header="Фильтры"
       opened={params.opened}
-      onRequestClose={()=>onColseRequest({opened: false})}>
+      onRequestClose={()=>onCloseRequest({...params, opened: false})}>
       <Row style={{paddingTop: '0px'}}>
         <Col col={12}>
           <Container>
             <RadioLabel>Период</RadioLabel>
             <StyledRadioGroup
               id='periodAppFilter'
-              value={radioValue}
+              value={periodAppFilter}
               size={'big'}
               list={IntervalDateFilterList}
-              onChange={({value}) => setRadioValue(value)}
+              onChange={({value}) => setPeriodAppFilter(value)}
             />
           </Container>
         </Col>
@@ -84,34 +80,53 @@ function FilterApp(props: FilterApplicationProps) {
             <RadioLabel>Отображение заявок</RadioLabel>
             <StyledRadioGroup
               id='viewAppFilter'
-              value={radioValue2}
+              value={viewAppBoardFilter}
               size={'big'}
               list={ViewAppFilterList}
-              onChange={({value}) => setRadioValue2(value)}
+              onChange={({value}) => setViewAppFilter(value)}
             />
           </Container>
         </Col>
       </Row>
       <Row style={{paddingTop: '0px'}}>
         <Col col={6}>
-          <MultiSelect
-            label="Состояние заявки"
-            size="micro"
-            list={StateAppFilterList}
-            placeholder="Выберите из списка"
-          />
+          <Container>
+            <MultiSelect
+              label="Состояние заявки"
+              size="micro"
+              initialValue={params.stateAppItemsFilter ?
+                params.stateAppItemsFilter.map(
+                    (item: stateAppFilter) => ({
+                      label: item.label,
+                      value: item.value,
+                    })):[]}
+              list={StateAppFilterList}
+              clearable={true}
+              placeholder="Выберите из списка"
+              onChange={(value) => {
+                setStateAppFilter(value);
+              }}
+            />
+          </Container>
         </Col>
       </Row>
       <Row style={{justifyContent: 'flex-end'}}>
         <Button
-          kind="secondary" size="small" type="button"
-          onClick={()=>onColseRequest({opened: false})}
+          kind="secondary"
+          size="small"
+          type="button"
+          onClick={()=> {
+            clearSearchParams();
+          }}
         >Очистить</Button>
         <Button
           style={{marginLeft: '16px'}}
-          kind="primary" size="small" type="button"
+          kind="primary"
+          size="small"
+          type="button"
           onClick={()=>{
-            confirm(params);
+            confirm({...params,
+              periodAppFilter, viewAppBoardFilter, stateAppItemsFilter});
           }}
         >Применить</Button>
       </Row>

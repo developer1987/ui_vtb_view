@@ -21,12 +21,10 @@ export const ViewAppMap: {
     viewAppTable: 'Таблица',
   };
 
-type StateAppFilter = 'stateAll' |
-  'stateHardCancel' | 'approveRM' | 'stateVerificationOD' |
+type StateAppFilter = 'stateHardCancel' | 'approveRM' | 'stateVerificationOD' |
    'stateDealApproved' | 'stateCreditIssue';
 
 export const StateAppFilterMap: { [K in StateAppFilter]: string } = {
-  stateAll: 'Все',
   stateHardCancel: 'Жесткий отказ',
   approveRM: 'На принятии решения РМ',
   stateVerificationOD: 'Верификация ОД',

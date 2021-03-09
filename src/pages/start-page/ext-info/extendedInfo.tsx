@@ -22,7 +22,7 @@ interface ExtendedInfoProps {
 }
 
 function ExtendedInfoHOC(params: ExtendedInfoProps) {
-  const {/* id, */appAttributes, clientFIO, appTransition} = params;
+  const {appAttributes, clientFIO, appTransition} = params;
   const {city, salesChannel, depInitial, salesSecondChannel, typeGuaranty,
     product, programm, cityBuyCar, carShowroom, kindCar, typeCar, passportRF,
     markCar, modelCar, clientGender, clientBirthday, clientYear,

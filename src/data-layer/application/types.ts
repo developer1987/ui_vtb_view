@@ -52,19 +52,23 @@ export interface IAppAttributes {
   clientPhoneOther: string
 }
 
-export interface IFilterParams {
-  perionAppFilter: string
-  viewAppFilter: string
-  stateAppItemsFilter: string
-  opened: boolean
+export interface stateAppFilter {
+  label: string
+  value: string
 }
 
+export interface IFilterParams {
+  periodAppFilter: string
+  viewAppBoardFilter: string
+  stateAppItemsFilter: stateAppFilter[]
+  opened: boolean
+}
 export interface ISearchParams {
-  documentNumber: string
+  documentNumberSearch: string
   clientLastNameSearch: string
   clientFirstNameSearch: string
   clientMiddleNameSearch: string
-  clientBirthdaySearch: Date
+  clientBirthdaySearch: string
   opened: boolean
 }
 

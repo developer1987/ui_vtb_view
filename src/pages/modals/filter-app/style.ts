@@ -24,4 +24,5 @@ export const RadioLabel = styled.div`
 
 export const StyledRadioGroup = styled(RadioGroup)`
   flex-direction: row;
+  padding-left: 5px;
 `;

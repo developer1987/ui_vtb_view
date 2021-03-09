@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, {useEffect, useState} from 'react';
 import * as Actions from 'src/data-layer/system/actionCreators';
 import {connect} from 'react-redux';
@@ -23,7 +24,7 @@ import {IFilterParams, ISearchParams} from '../../data-layer/application/types';
 
 function DataTable(props: IProps) {
   const {caption, headerElements, dataIsLoading, data, actions, method,
-    firstColLink, editRow, extendedInfo} = props;
+    firstColLink, extendedInfo} = props;
   const content = data.content || [];
   const totalElements = data.totalElements || 1;
   const [resizedHeader, setResizedHeader] = useState<any>(null);
@@ -31,24 +32,31 @@ function DataTable(props: IProps) {
     acc[curr.fieldName] = 'desc';
     return acc;
   }, {});
-  const searchParamsDefault = {
-    documentNumber: '',
+
+  const searchModalParamsDefault: ISearchParams = {
+    documentNumberSearch: '',
     clientLastNameSearch: '',
     clientFirstNameSearch: '',
     clientMiddleNameSearch: '',
-    clientBirthdaySearch: new Date(),
+    clientBirthdaySearch: '',
+    opened: false
   };
-  const filterParamsDefault = {
-    perionAppFilter: 'intevalDateAll',
-    viewAppFilter: 'viewAppBoard',
-    stateAppItemsFilter: 'stateAll',
+
+  const filterParamsDefault: IFilterParams = {
+    periodAppFilter: 'intervalDateAll',
+    viewAppBoardFilter: 'viewAppBoard',
+    stateAppItemsFilter: [{label: 'Все',
+      value: 'stateAll'}],
+    opened: false
   };
+
   const [sortDirection, setSortDirection] = useState<any>(sortOptions);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchModalParams, setSearchModalParams] = useState<ISearchParams>({
-    ...searchParamsDefault, opened: false});
-  const [filterModalParams, setFilterModalParams] = useState<IFilterParams>({
-    ...filterParamsDefault, opened: false});
+  const [currentApplication, setCurrentApplication] = useState('');
+  const [searchModalParams, setSearchModalParams] =
+  useState<ISearchParams>(searchModalParamsDefault);
+  const [filterModalParams, setFilterModalParams] =
+  useState<IFilterParams>(filterParamsDefault);
   const [rightPanelParams, setRightPanelParams] = useState<any>({
     show: false
   });
@@ -65,14 +73,14 @@ function DataTable(props: IProps) {
       sort: `${fieldName},${direction}`
     });
   };
-  const searchApp = (item: any) => {
+  const searchApp = (searchModalParams: ISearchParams) => {
     console.log('search...');
-    setSearchModalParams({...item, opened: true});
+    setSearchModalParams({...searchModalParams, opened: true});
   };
 
-  const filterApp = (item: any) => {
+  const filterApp = (filterModalParams: IFilterParams) => {
     console.log('filter...');
-    setFilterModalParams({...item, opened: true});
+    setFilterModalParams({...filterModalParams, opened: true});
   };
 
   useEffect(() => {
@@ -100,9 +108,9 @@ function DataTable(props: IProps) {
       </TitleRow>
       <Wrapper>
         <SearchPanel>
-          <FilterButton onClick={filterApp}/>
+          <FilterButton onClick={() => filterApp(filterModalParams)}/>
           <ExportListButton/>
-          <SearchButton onClick={searchApp}/>
+          <SearchButton onClick={() => searchApp(searchModalParams)}/>
         </SearchPanel>
         <Table colSize={headerElements.length}>
           <THead onMouseMove={(e) => {
@@ -155,8 +163,10 @@ function DataTable(props: IProps) {
                               size="small"
                               href="#"
                               onClick={() => {
+                                setCurrentApplication(row[col.fieldName]);
                                 setRightPanelParams({
-                                  show: true, index: i});
+                                  show: !(currentApplication == row[col.fieldName] && !!rightPanelParams.show),
+                                  index: i});
                               }}>
                               {row[col.fieldName]}
                             </Link> :
@@ -193,8 +203,8 @@ function DataTable(props: IProps) {
             </TBody>
           }
         </Table>
-        <RightPanel params={rightPanelParams} setParams={setRightPanelParams}
-          data={content} edit={editRow} extendedInfo={extendedInfo}/>
+        <RightPanel params={rightPanelParams} setParams={setRightPanelParams} setCurrentApplication={setCurrentApplication}
+          data={content} extendedInfo={extendedInfo}/>
         <div
           style={{
             marginTop: '15px',
@@ -210,16 +220,14 @@ function DataTable(props: IProps) {
       </Wrapper>
       {searchModalParams.opened && <SearchApp
         params={searchModalParams}
-        onColseRequest={setSearchModalParams}
+        onCloseRequest={setSearchModalParams}
         confirm={(params: any) => {
-          console.log('search...' + params.id);
           setSearchModalParams({...params, opened: false});
         }}/>}
       {filterModalParams.opened && <FilterApp
         params={filterModalParams}
-        onColseRequest={setFilterModalParams}
+        onCloseRequest={setFilterModalParams}
         confirm={(params: any) => {
-          console.log('filter...' + params.id);
           setFilterModalParams({...params, opened: false});
         }}/>}
     </>

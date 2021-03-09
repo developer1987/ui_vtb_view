@@ -10,13 +10,14 @@ import closeIcon from
 interface PanelProps {
   params: any
   setParams: any
+  setCurrentApplication: any
   data: any
-  edit: any
   extendedInfo: any
 }
 
 function RPanel(props: PanelProps) {
-  const {params, setParams, data=[], edit, extendedInfo} = props;
+  const {params, setParams, setCurrentApplication, data=[],
+    extendedInfo} = props;
   const {show=false, index} = params;
   const row = data[index];
   return (
@@ -31,6 +32,7 @@ function RPanel(props: PanelProps) {
             onClick={() => {
               if (index > 0) {
                 setParams({...params, index: index-1});
+                setCurrentApplication(data[index-1].number);
               }
             }}
             svg={leftArrowIcon}
@@ -43,6 +45,7 @@ function RPanel(props: PanelProps) {
             onClick={() => {
               if (index < data.length - 1) {
                 setParams({...params, index: index+1});
+                setCurrentApplication(data[index+1].number);
               }
             }}
             svg={rightArrowIcon}
@@ -50,7 +53,7 @@ function RPanel(props: PanelProps) {
             <span />
           </Button>
           <SmallCaption>Заявка №{row.number}</SmallCaption>
-          <IconState><TextState>{row.state}</TextState></IconState>
+          <IconState><TextState>{row.stateName}</TextState></IconState>
         </div>
         <div style={{
           display: 'flex',

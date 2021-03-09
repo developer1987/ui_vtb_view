@@ -1,20 +1,34 @@
 import React, {useEffect, useState} from 'react';
 import {Modal, Button, Input} from '@openvtb/react-ui-kit';
 import {Col, Row} from 'src/components/layout';
+import {ISearchParams} from 'src/data-layer/application/types';
 
-
-interface EdReferenceProps {
-  params: any
+interface IAppSearch {
+  params: ISearchParams
   confirm: any
-  onColseRequest: any
+  onCloseRequest: any
 }
 
-function SearchApp(props: EdReferenceProps) {
-  const {params, confirm, onColseRequest} = props;
-  const [name, setReferenceName] = useState(params.name);
-  const [sysname, setReferenceSysname] = useState(params.sysname);
-  const [description, setReferenceDescription] =
-  useState(params.description);
+function SearchApp(props: IAppSearch) {
+  const {params, confirm, onCloseRequest} = props;
+  const [documentNumberSearch, setDocumentNumberSearch] =
+  useState(params.documentNumberSearch);
+  const [clientLastNameSearch, setClientLastNameSearch] =
+  useState(params.clientLastNameSearch);
+  const [clientFirstNameSearch, setClientFirstNameSearch] =
+  useState(params.clientFirstNameSearch);
+  const [clientMiddleNameSearch, setClientMiddleNameSearch] =
+  useState(params.clientMiddleNameSearch);
+  const [clientBirthdaySearch, setClientBirthdaySearch] =
+  useState(params.clientBirthdaySearch);
+
+  const clearSearchParams = () => {
+    setDocumentNumberSearch('');
+    setClientLastNameSearch('');
+    setClientFirstNameSearch('');
+    setClientMiddleNameSearch('');
+    setClientBirthdaySearch('');
+  };
 
   useEffect(() => {
     document.querySelector('#edBirthday').setAttribute('type', 'date');
@@ -26,56 +40,44 @@ function SearchApp(props: EdReferenceProps) {
       size="big"
       header="Поиск"
       opened={params.opened}
-      onRequestClose={()=>onColseRequest({opened: false})}>
+      onRequestClose={()=>onCloseRequest({...params, opened: false})}>
       <Row>
         <Col col={6}>
           <Input.Text
-            id="edNumber"
+            id="edDocNumber"
             label="Номер заявки"
-            value={name}
+            value={documentNumberSearch}
             size="micro"
-            onChange={(event, value) => {
-              setReferenceName(value);
-              // pushToWizard('name', value);
-            }}
+            onChange={(_event, value) => setDocumentNumberSearch(value)}
           />
         </Col>
         <Col col={6}>
           <Input.Text
-            id="edName"
+            id="edClientLastName"
             label="Фамилия"
-            value={name}
+            value={clientLastNameSearch}
             size="micro"
-            onChange={(event, value) => {
-              setReferenceName(value);
-              // pushToWizard('name', value);
-            }}
+            onChange={(_event, value) => setClientLastNameSearch(value)}
           />
         </Col>
       </Row>
       <Row>
         <Col col={6}>
           <Input.Text
-            id="edSysname"
+            id="edClientFirstName"
             label="Имя"
-            value={sysname}
+            value={clientFirstNameSearch}
             size="micro"
-            onChange={(event, value) => {
-              setReferenceSysname(value);
-              // pushToWizard('sysname', value);/
-            }}
+            onChange={(_event, value) => setClientFirstNameSearch(value)}
           />
         </Col>
         <Col col={6}>
           <Input.Text
-            id="edSysname"
+            id="edClientMiddleName"
             label="Отчество"
-            value={sysname}
+            value={clientMiddleNameSearch}
             size="micro"
-            onChange={(event, value) => {
-              setReferenceSysname(value);
-              // pushToWizard('sysname', value);/
-            }}
+            onChange={(_event, value) => setClientMiddleNameSearch(value)}
           />
         </Col>
       </Row>
@@ -84,25 +86,26 @@ function SearchApp(props: EdReferenceProps) {
           <Input.Text
             id="edBirthday"
             label="Дата рождения"
-            value={description}
+            value={clientBirthdaySearch}
             size="micro"
-            onChange={(event, value) => {
-              setReferenceDescription(value);
-              // pushToWizard('description', value);
-            }}
+            onChange={(_event, value) => setClientBirthdaySearch(value)}
           />
         </Col>
       </Row>
       <Row style={{justifyContent: 'flex-end'}}>
         <Button
           kind="secondary" size="small" type="button"
-          onClick={()=>onColseRequest({opened: false})}
+          onClick={()=> {
+            clearSearchParams();
+          }}
         >Очистить</Button>
         <Button
           style={{marginLeft: '16px'}}
           kind="primary" size="small" type="button"
           onClick={()=>{
-            confirm(params);
+            confirm({...params, documentNumberSearch, clientLastNameSearch,
+              clientFirstNameSearch, clientMiddleNameSearch,
+              clientBirthdaySearch});
           }}
         >Применить</Button>
       </Row>
