@@ -13,6 +13,7 @@ interface ExtendedInfoProps {
   number: string
   creationDate: number
   creationDateStr: string
+  clientBirthdayStr: string
   clientFIO: string
   processingService: string
   state: string
@@ -22,10 +23,10 @@ interface ExtendedInfoProps {
 }
 
 function ExtendedInfoHOC(params: ExtendedInfoProps) {
-  const {appAttributes, clientFIO, appTransition} = params;
+  const {appAttributes, clientFIO, clientBirthdayStr, appTransition} = params;
   const {city, salesChannel, depInitial, salesSecondChannel, typeGuaranty,
     product, programm, cityBuyCar, carShowroom, kindCar, typeCar, passportRF,
-    markCar, modelCar, clientGender, clientBirthday, clientYear,
+    markCar, modelCar, clientGender, clientYear,
     clientPlaceBirthday, snils, citizenship, isResident, isSalaryClient,
     factRegistrationAddress, permanentRegistrationAddress, passportForeign,
     clientMobilePhone, clientPhoneOther} = appAttributes;
@@ -159,7 +160,7 @@ function ExtendedInfoHOC(params: ExtendedInfoProps) {
           </Col>
           <Col col={4}>
             <TextInfo caption="Дата рождения">
-              {clientBirthday}
+              {clientBirthdayStr}
             </TextInfo>
           </Col>
           <Col col={4}>

@@ -6,6 +6,7 @@ import {
   IApplication
 } from './types';
 import {sortBy} from 'src/helpers/sorting';
+import _ from 'lodash';
 
 export function getReferences(params: any) {
   return async function(dispatch: Dispatch) {
@@ -30,13 +31,50 @@ export function findApplicationsByParams(params: any) {
   return async function(dispatch: Dispatch) {
     try {
       dispatch({type: actionTypes.GET_APPLICATIONS});
+      let subDataApplication = window.__vtb_proto_data_applications
+          .slice()
+          .filter(
+              item => item.number.includes(params.documentNumberSearch)
+          )
+          .filter(
+              item => item.clientFIO.includes(params.clientLastNameSearch)
+          )
+          .filter(
+              item => item.clientFIO.includes(params.clientFirstNameSearch)
+          )
+          .filter(
+              item => item.clientFIO.includes(params.clientMiddleNameSearch)
+          );
+      if (params.clientBirthdaySearch) {
+        subDataApplication = subDataApplication.filter(
+            item => item.clientBirthday ==
+            new Date(params.clientBirthdaySearch).getTime()
+        );
+      }
+      if (params.stateAppItemsFilter) {
+        const stateAppArray: string[] = [];
+        params.stateAppItemsFilter.forEach(
+            (item: any) => stateAppArray.push(item.value)
+        );
+        if (stateAppArray.length == 1 && stateAppArray[0] != 'stateAll' ||
+        stateAppArray.length > 1 ) {
+          subDataApplication = subDataApplication.filter(
+              item => stateAppArray.indexOf(item.stateSysName) != -1
+          );
+        }
+      }
+
+      debugger;
+
+      window.__vtb_proto_sub_data_applications =
+       _.chunk(subDataApplication, 10);
       const sortArr = params.sort.split(',');
       let currentColumn = sortArr[0];
       const currentOrder = sortArr[1];
       if (currentColumn == 'creationDateStr') {
         currentColumn = 'creationDate';
       }
-      const res = window.__vtb_proto_data_applications[params.page || 0]
+      const res = window.__vtb_proto_sub_data_applications[params.page || 0]
           .slice(0)
           .sort(sortBy<IApplication>(currentColumn, currentOrder));
       const response = {data: {

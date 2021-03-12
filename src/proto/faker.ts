@@ -10,11 +10,10 @@ const maleFirstNames = require('faker/lib/locales/ru/name/male_first_name.js');
 const maleLastNames = require('faker/lib/locales/ru/name/male_last_name.js');
 const maleMiddleNames = require('faker/lib/locales/ru/name/male_middle_name.js');
 
-// import { nanoid } from 'nanoid';
 import {v4 as uuidv4} from 'uuid';
 const faker = require('faker');
 faker.locale = 'ru';
-// eslint-disable-next-line max-len
+
 import {IApplication, IAppTransition, IAppAttributes} from '../data-layer/application/types';
 const stateAll = [
   'Жесткий отказ',
@@ -167,8 +166,13 @@ export function generateDate() {
   return new Date(2021, getRandom(0, 1), getRandom(0, 27), getRandom(0, 24), getRandom(0, 59), getRandom(0, 59));
 }
 
+export function generateBirthDate() {
+  return new Date(getRandom(1965, 2000), getRandom(0, 11), getRandom(0, 27), 3);
+}
+
 export function generateApplicationEntry(): IApplication {
   const date = generateDate();
+  const birthDay = generateBirthDate();
   const stateSysNameCurrent = getRandomElement(stateSysName);
   return {
     uuid: uuidv4(),
@@ -177,6 +181,8 @@ export function generateApplicationEntry(): IApplication {
     creationDate: date.getTime(),
     creationDateStr: date.toLocaleDateString(),
     clientFIO: generateFIO(),
+    clientBirthday: birthDay.getTime(),
+    clientBirthdayStr: birthDay.toLocaleDateString(),
     processingService: getRandomElement(processingServiceAll),
     stateSysName: stateSysNameCurrent,
     stateName: stateMap[stateSysNameCurrent],
@@ -230,7 +236,6 @@ export function generateAppAttributes(): IAppAttributes {
     markCar: getRandomElement(markCarList),
     modelCar: getRandomElement(modelCarList),
     clientGender: 'Мужской',
-    clientBirthday: '11.12.1987',
     clientYear: '33',
     clientPlaceBirthday: getRandomElement(cityNames),
     snils: '256-777-466 33',

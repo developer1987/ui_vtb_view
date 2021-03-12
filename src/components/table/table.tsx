@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
 import React, {useEffect, useState} from 'react';
+import exportFromJSON, {ExportType} from 'export-from-json';
+import {v4 as uuidv4} from 'uuid';
 import * as Actions from 'src/data-layer/system/actionCreators';
 import {connect} from 'react-redux';
 import {PaginationComplex, Spinner, Link}
@@ -83,10 +85,15 @@ function DataTable(props: IProps) {
     setFilterModalParams({...filterModalParams, opened: true});
   };
 
+  const exportDataToXLS = (data: any, filename: string, exportType: ExportType) => {
+    const fileName = uuidv4();
+    exportFromJSON({data, fileName, exportType});
+  };
+
   useEffect(() => {
-    method(Object.assign(pagingParams, {page: currentPage-1}));
+    method(Object.assign(pagingParams, {page: currentPage-1}, filterModalParams, searchModalParams));
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, pagingParams]);
+  }, [currentPage, pagingParams, filterModalParams, searchModalParams]);
 
   return (
     <>
@@ -109,7 +116,7 @@ function DataTable(props: IProps) {
       <Wrapper>
         <SearchPanel>
           <FilterButton onClick={() => filterApp(filterModalParams)}/>
-          <ExportListButton/>
+          <ExportListButton onClick={() => exportDataToXLS(content, '', 'xls')}/>
           <SearchButton onClick={() => searchApp(searchModalParams)}/>
         </SearchPanel>
         <Table colSize={headerElements.length}>

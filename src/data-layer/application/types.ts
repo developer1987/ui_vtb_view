@@ -5,6 +5,8 @@ export interface IApplication {
   creationDate: number
   creationDateStr: string
   clientFIO: string
+  clientBirthday: number
+  clientBirthdayStr: string
   processingService: string
   stateSysName: string
   stateName: string
@@ -37,7 +39,6 @@ export interface IAppAttributes {
   markCar: string
   modelCar: string
   clientGender: string
-  clientBirthday: string
   clientYear: string
   clientPlaceBirthday: string
   snils: string
