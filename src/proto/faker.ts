@@ -163,7 +163,8 @@ export function generateFIO() {
 }
 
 export function generateDate() {
-  return new Date(2021, getRandom(0, 1), getRandom(0, 27), getRandom(0, 24), getRandom(0, 59), getRandom(0, 59));
+  const now = new Date();
+  return new Date(now.getUTCFullYear(), getRandom(0, now.getUTCMonth()), getRandom(0, 27), getRandom(0, 24), getRandom(0, 59), getRandom(0, 59));
 }
 
 export function generateBirthDate() {

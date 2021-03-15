@@ -139,7 +139,7 @@ function DataTable(props: IProps) {
                   }}>
                   {item.name}<img
                     style={{width: '10px', marginLeft: '5px'}}
-                    src={sortDirection[item.fieldName] === 'desc' ?
+                    src={sortDirection[item.fieldName] === 'asc' ?
                     arrowUpIcon : arrowDownIcon}/>
                   <ResizeHandle onMouseDown={({target}) => {
                     const column = target.parentNode;

@@ -63,9 +63,37 @@ export function findApplicationsByParams(params: any) {
           );
         }
       }
-
-      debugger;
-
+      if (params.periodAppFilter &&
+        params.periodAppFilter != 'intervalDateAll') {
+        const now = new Date();
+        const maxDateUTC : any = new Date(now.getTime() +
+        now.getTimezoneOffset() * 60000);
+        maxDateUTC.setHours(23, 59, 59);
+        const minDateUTC : any = new Date(now.getTime() +
+        now.getTimezoneOffset() * 60000);
+        switch (params.periodAppFilter+'') {
+          case 'intervalDateToday': {
+            minDateUTC.setHours(0, 0, 0);
+            break;
+          }
+          case 'intervalDateWeek': {
+            minDateUTC.setDate(minDateUTC.getUTCDate() - 7);
+            break;
+          }
+          case 'intervalDateMonth': {
+            const month = minDateUTC.getUTCMonth();
+            minDateUTC.setMonth(minDateUTC.getMonth() - 1);
+            while (minDateUTC.getUTCMonth() === month) {
+              minDateUTC.setDate(minDateUTC.getUTCDate() - 1);
+            }
+            break;
+          }
+        }
+        subDataApplication = subDataApplication.filter(
+            item => item.creationDate > minDateUTC.getTime() &&
+            item.creationDate < maxDateUTC.getTime()
+        );
+      }
       window.__vtb_proto_sub_data_applications =
        _.chunk(subDataApplication, 10);
       const sortArr = params.sort.split(',');
