@@ -6,14 +6,15 @@ import {StateAppFilterMap} from 'src/constants/lang';
 import {Container, RadioLabel, StyledRadioGroup} from './style';
 import {IFilterParams, stateAppFilter} from 'src/data-layer/application/types';
 
-interface FilterApplicationProps {
+interface IFilterApplicationProps {
   params: IFilterParams
+  opened: boolean
   confirm: any
   onCloseRequest: any
 }
 
-function FilterApp(props: FilterApplicationProps) {
-  const {params, confirm, onCloseRequest} = props;
+function FilterApp(props: IFilterApplicationProps) {
+  const {params, opened, confirm, onCloseRequest} = props;
   const [periodAppFilter, setPeriodAppFilter] =
   useState(params.periodAppFilter);
   const [viewAppBoardFilter, setViewAppFilter] =
@@ -45,21 +46,13 @@ function FilterApp(props: FilterApplicationProps) {
   );
   StateAppFilterList.unshift({label: 'Все', value: 'stateAll'});
 
-  const clearSearchParams = () => {
-    debugger;
-    setPeriodAppFilter('intervalDateAll');
-    setViewAppFilter('viewAppBoard');
-    setStateAppFilter([{label: 'Все',
-      value: 'stateAll'}]);
-  };
-
   return (
     <Modal
       shouldCloseOnOverlayClick={false}
       size="big"
       header="Фильтры"
-      opened={params.opened}
-      onRequestClose={()=>onCloseRequest({...params, opened: false})}>
+      opened={opened}
+      onRequestClose={()=>onCloseRequest({opened: false})}>
       <Row style={{paddingTop: '0px'}}>
         <Col col={12}>
           <Container>
@@ -116,7 +109,8 @@ function FilterApp(props: FilterApplicationProps) {
           size="small"
           type="button"
           onClick={()=> {
-            clearSearchParams();
+            confirm({...params, periodAppFilter: '', viewAppBoardFilter: '',
+              stateAppItemsFilter: ''});
           }}
         >Очистить</Button>
         <Button

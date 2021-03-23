@@ -8,25 +8,6 @@ import {
 import {sortBy} from 'src/helpers/sorting';
 import _ from 'lodash';
 
-export function getReferences(params: any) {
-  return async function(dispatch: Dispatch) {
-    try {
-      dispatch({type: actionTypes.GET_REFERENCES});
-      const response = await API.reference.findReferenceByParams(params);
-      dispatch({
-        type: actionTypes.GET_REFERENCES_SUCCESS,
-        applications: response.data.content,
-        totalPages: response.data.totalPages
-      });
-    } catch (error) {
-      dispatch({
-        type: actionTypes.GET_REFERENCES_FAIL,
-        error: error
-      });
-    }
-  };
-}
-
 export function findApplicationsByParams(params: any) {
   return async function(dispatch: Dispatch) {
     try {
@@ -34,16 +15,20 @@ export function findApplicationsByParams(params: any) {
       let subDataApplication = window.__vtb_proto_data_applications
           .slice()
           .filter(
-              item => item.number.includes(params.documentNumberSearch)
+              item => item.number.toLowerCase()
+                  .includes(params.documentNumberSearch.toLowerCase().trim())
           )
           .filter(
-              item => item.clientFIO.includes(params.clientLastNameSearch)
+              item => item.clientFIO.toLowerCase()
+                  .includes(params.clientLastNameSearch.toLowerCase().trim())
           )
           .filter(
-              item => item.clientFIO.includes(params.clientFirstNameSearch)
+              item => item.clientFIO.toLowerCase()
+                  .includes(params.clientFirstNameSearch.toLowerCase().trim())
           )
           .filter(
-              item => item.clientFIO.includes(params.clientMiddleNameSearch)
+              item => item.clientFIO.toLowerCase()
+                  .includes(params.clientMiddleNameSearch.toLowerCase().trim())
           );
       if (params.clientBirthdaySearch) {
         subDataApplication = subDataApplication.filter(
@@ -94,6 +79,9 @@ export function findApplicationsByParams(params: any) {
             item.creationDate < maxDateUTC.getTime()
         );
       }
+      const totalElements = subDataApplication.length;
+      const totalPages = (totalElements % 10 == 0) ? totalElements/10 :
+      Math.round(totalElements/10) + 1;
       window.__vtb_proto_sub_data_applications =
        _.chunk(subDataApplication, 10);
       const sortArr = params.sort.split(',');
@@ -102,14 +90,17 @@ export function findApplicationsByParams(params: any) {
       if (currentColumn == 'creationDateStr') {
         currentColumn = 'creationDate';
       }
-      const res = window.__vtb_proto_sub_data_applications[params.page || 0]
+      const res = window.__vtb_proto_sub_data_applications.length > 0 ?
+      window.__vtb_proto_sub_data_applications[params.page || 0]
           .slice(0)
-          .sort(sortBy<IApplication>(currentColumn, currentOrder));
-      const response = {data: {
-        content: res,
-        totalElements: 100,
-        totalPages: 10
-      }};
+          .sort(sortBy<IApplication>(currentColumn, currentOrder)) : [];
+      const response = {
+        data: {
+          content: res,
+          totalElements: totalElements,
+          totalPages: totalPages
+        }
+      };
       // eslint-disable-next-line max-len
       // const responseTwo = await API.reference.findApplicationsByParams(params);
       dispatch({
@@ -120,28 +111,6 @@ export function findApplicationsByParams(params: any) {
     } catch (error) {
       dispatch({
         type: actionTypes.GET_APPLICATIONS_FAIL,
-        error
-      });
-    }
-  };
-}
-
-export function getQuerySuggest(params: any = {}) {
-  return async function(dispatch: Dispatch) {
-    try {
-      dispatch({type: actionTypes.GET_QUERYSUGGEST});
-      const response = await API.reference.findReferenceByParams(params);
-      const key = Object.keys(params)[0];
-      dispatch({
-        type: actionTypes.GET_QUERYSUGGEST_SUCCESS,
-        suggest: {
-          [key]: response.data.content.map((ref: any) => ref[key] || '')
-        },
-        key
-      });
-    } catch (error) {
-      dispatch({
-        type: actionTypes.GET_QUERYSUGGEST_FAIL,
         error
       });
     }

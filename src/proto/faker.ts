@@ -188,7 +188,7 @@ export function generateApplicationEntry(): IApplication {
     stateSysName: stateSysNameCurrent,
     stateName: stateMap[stateSysNameCurrent],
     employeeFIO: generateFIO(),
-    appTransition: generateArray(getRandom(5, 10), () => generateHistoryDetails()),
+    appTransition: generateArray(getRandom(7, 10), () => generateHistoryDetails()),
     appAttributes: generateAppAttributes()
   };
 }

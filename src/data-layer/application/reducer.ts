@@ -5,10 +5,6 @@ import {
 } from './types';
 
 const initialState: any = {
-  suggest: {
-    number: []
-  },
-  deletedItems: []
 };
 
 const applicationReducer = (

@@ -1,9 +1,7 @@
-import React, {useState} from 'react';
-import {connect} from 'react-redux';
+import React from 'react';
 import {Switch,
   Route, RouteComponentProps, useRouteMatch} from 'react-router-dom';
 import {routes, IRouter} from 'src/routes';
-import * as Actions from 'src/data-layer/system/actionCreators';
 import '../assets/style/fonts.css';
 import {GlobalStyle} from '../assets/normalize';
 

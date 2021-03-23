@@ -31,3 +31,31 @@ export const StateAppFilterMap: { [K in StateAppFilter]: string } = {
   stateDealApproved: 'Одобрено',
   stateCreditIssue: 'Кредит выдан',
 };
+
+export interface ApplicationFilter {
+  documentNumberSearch: string,
+  clientLastNameSearch: string,
+  clientFirstNameSearch: string,
+  clientMiddleNameSearch: string,
+  clientBirthdaySearch: string,
+}
+
+export const ApplicationFilterLabels: {
+  [K in keyof ApplicationFilter]: string;
+} = {
+  documentNumberSearch: 'Номер заявки',
+  clientLastNameSearch: 'Фамилия',
+  clientFirstNameSearch: 'Имя',
+  clientMiddleNameSearch: 'Отчество',
+  clientBirthdaySearch: 'Дата рождения',
+};
+
+export const ApplicationFilterValues: {
+  [K in keyof ApplicationFilter]: { [key: string]: string };
+} = {
+  documentNumberSearch: {},
+  clientLastNameSearch: {},
+  clientFirstNameSearch: {},
+  clientMiddleNameSearch: {},
+  clientBirthdaySearch: {},
+};

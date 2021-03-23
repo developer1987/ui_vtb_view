@@ -22,10 +22,13 @@ export const ScrollBarWrapper = styled.div<
     background: #E7E7E7; 
   }  
   &::-webkit-scrollbar-thumb {
-    background: #B4B4B4;
+    background: #97A9BE;
     border-radius: 5px; 
   }  
   &::-webkit-scrollbar-thumb:hover {
-    background: #7E7E7E; 
+    background: #97A7BC; 
+  }
+  &::-webkit-scrollbar-track-piece {
+    background: #FFFFFF;
   }
 `;

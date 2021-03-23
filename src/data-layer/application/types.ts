@@ -62,16 +62,29 @@ export interface IFilterParams {
   periodAppFilter: string
   viewAppBoardFilter: string
   stateAppItemsFilter: stateAppFilter[]
-  opened: boolean
 }
 export interface ISearchParams {
-  documentNumberSearch: string
-  clientLastNameSearch: string
-  clientFirstNameSearch: string
-  clientMiddleNameSearch: string
-  clientBirthdaySearch: string
-  opened: boolean
+  documentNumberSearch?: string
+  clientLastNameSearch?: string
+  clientFirstNameSearch?: string
+  clientMiddleNameSearch?: string
+  clientBirthdaySearch?: string
 }
+
+export const searchModalParamsDefault: ISearchParams = {
+  documentNumberSearch: '',
+  clientLastNameSearch: '',
+  clientFirstNameSearch: '',
+  clientMiddleNameSearch: '',
+  clientBirthdaySearch: '',
+};
+
+export const filterParamsDefault: IFilterParams = {
+  periodAppFilter: 'intervalDateAll',
+  viewAppBoardFilter: 'viewAppBoard',
+  stateAppItemsFilter: [{label: 'Все',
+    value: 'stateAll'}],
+};
 
 type GetApplication = {
   type: 'GET_APPLICATIONS'

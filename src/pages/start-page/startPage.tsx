@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, {useState} from 'react';
+import React from 'react';
 import * as Actions from 'src/data-layer/application/actionCreators';
 import {connect} from 'react-redux';
 import DataTable from 'src/components/table';
@@ -13,14 +13,12 @@ interface StartPageProps {
 
 function StartPage(props: StartPageProps) {
   const {findApplicationsByParams, applications, appIsLoading} = props;
-  const [setProcessingParams] = useState<any>({opened: false});
   return (
     <div>
       <DataTable
         dataIsLoading={appIsLoading}
         firstColLink={true}
         caption="Витрина заявок"
-        editRow={setProcessingParams}
         extendedInfo={ExtendedInfo}
         method={(params: any) => findApplicationsByParams(params)}
         headerElements={[

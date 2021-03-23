@@ -182,7 +182,7 @@ ${({svgUrl}) => {
 
 export const RightPanel = styled.div`
   position: fixed;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   top: 0;
   right: 0;
   padding: 24px;
@@ -196,7 +196,11 @@ export const RightPanel = styled.div`
 `;
 
 export const RightPanelHeader = styled.div`
-  display: flex;
+  position: sticky;
+  top: 0;
+  display: fixed;
+  z-index: 1000;
+  background-color: white;
   flex-direction: row;
   justify-content: space-between;
 `;

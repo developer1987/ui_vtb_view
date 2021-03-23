@@ -5,12 +5,13 @@ import {ISearchParams} from 'src/data-layer/application/types';
 
 interface IAppSearch {
   params: ISearchParams
+  opened: boolean
   confirm: any
   onCloseRequest: any
 }
 
 function SearchApp(props: IAppSearch) {
-  const {params, confirm, onCloseRequest} = props;
+  const {params, opened, confirm, onCloseRequest} = props;
   const [documentNumberSearch, setDocumentNumberSearch] =
   useState(params.documentNumberSearch);
   const [clientLastNameSearch, setClientLastNameSearch] =
@@ -22,16 +23,8 @@ function SearchApp(props: IAppSearch) {
   const [clientBirthdaySearch, setClientBirthdaySearch] =
   useState(params.clientBirthdaySearch);
 
-  const clearSearchParams = () => {
-    setDocumentNumberSearch('');
-    setClientLastNameSearch('');
-    setClientFirstNameSearch('');
-    setClientMiddleNameSearch('');
-    setClientBirthdaySearch('');
-  };
-
   useEffect(() => {
-    document.querySelector('#edBirthday').setAttribute('type', 'date');
+    document.querySelector('#edBirthDay').setAttribute('type', 'date');
   }, []);
 
   return (
@@ -39,8 +32,8 @@ function SearchApp(props: IAppSearch) {
       shouldCloseOnOverlayClick={false}
       size="big"
       header="Поиск"
-      opened={params.opened}
-      onRequestClose={()=>onCloseRequest({...params, opened: false})}>
+      opened={opened}
+      onRequestClose={()=>onCloseRequest({opened: false})}>
       <Row>
         <Col col={6}>
           <Input.Text
@@ -84,7 +77,7 @@ function SearchApp(props: IAppSearch) {
       <Row>
         <Col col={6}>
           <Input.Text
-            id="edBirthday"
+            id="edBirthDay"
             label="Дата рождения"
             value={clientBirthdaySearch}
             size="micro"
@@ -96,7 +89,10 @@ function SearchApp(props: IAppSearch) {
         <Button
           kind="secondary" size="small" type="button"
           onClick={()=> {
-            clearSearchParams();
+            confirm({...params, documentNumberSearch: '',
+              clientLastNameSearch: '', clientFirstNameSearch: '',
+              clientMiddleNameSearch: '',
+              clientBirthdaySearch: ''});
           }}
         >Очистить</Button>
         <Button
