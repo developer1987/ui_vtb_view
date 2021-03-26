@@ -83,7 +83,7 @@ function DataTable(props: IProps) {
     const obj = JSON.parse(id);
     const paramSysname: keyof ISearchParams = obj['key'];
     searchModalParams[paramSysname] = '';
-    setSearchModalParams(searchModalParams);
+    setSearchModalParams({...searchModalParams});
   };
 
   useEffect(() => {
