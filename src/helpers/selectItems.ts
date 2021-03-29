@@ -16,5 +16,6 @@ export function listToItems<T>(
 }
 
 export function itemsToValues(value: ISelectComponentItem[]): string[] {
+  debugger;
   return value.map((item) => item.value);
 }

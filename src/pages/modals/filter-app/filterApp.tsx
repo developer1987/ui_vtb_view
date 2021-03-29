@@ -2,25 +2,24 @@ import React, {useMemo, useState} from 'react';
 import {Modal, Button, MultiSelect} from '@openvtb/react-ui-kit';
 import {Col, Row} from 'src/components/layout';
 import {listToItems} from '../../../helpers/selectItems';
-import {StateAppFilterMap} from 'src/constants/lang';
+import {ApplicationFilter, StateAppFilterMap} from 'src/constants/lang';
 import {Container, RadioLabel, StyledRadioGroup} from './style';
-import {IFilterParams, stateAppFilter} from 'src/data-layer/application/types';
 
 interface IFilterApplicationProps {
-  params: IFilterParams
+  filters: ApplicationFilter
   opened: boolean
   confirm: any
   onCloseRequest: any
 }
 
 function FilterApp(props: IFilterApplicationProps) {
-  const {params, opened, confirm, onCloseRequest} = props;
+  const {filters, opened, confirm, onCloseRequest} = props;
   const [periodAppFilter, setPeriodAppFilter] =
-  useState(params.periodAppFilter);
+  useState(filters.periodAppFilter);
   const [viewAppBoardFilter, setViewAppFilter] =
-  useState(params.viewAppBoardFilter);
+  useState(filters.viewAppBoardFilter);
   const [stateAppItemsFilter, setStateAppFilter] =
-  useState(params.stateAppItemsFilter);
+  useState(filters.stateAppItemsFilter);
 
   const IntervalDateFilterList = useMemo(
       () => [
@@ -44,7 +43,6 @@ function FilterApp(props: IFilterApplicationProps) {
       Object.entries(StateAppFilterMap),
       ([value, label]) => [label, value]
   );
-  StateAppFilterList.unshift({label: 'Все', value: 'stateAll'});
 
   return (
     <Modal
@@ -87,9 +85,9 @@ function FilterApp(props: IFilterApplicationProps) {
             <MultiSelect
               label="Состояние заявки"
               size="micro"
-              initialValue={params.stateAppItemsFilter ?
-                params.stateAppItemsFilter.map(
-                    (item: stateAppFilter) => ({
+              initialValue={filters.stateAppItemsFilter ?
+                filters.stateAppItemsFilter.map(
+                    (item: any) => ({
                       label: item.label,
                       value: item.value,
                     })):[]}
@@ -109,7 +107,7 @@ function FilterApp(props: IFilterApplicationProps) {
           size="small"
           type="button"
           onClick={()=> {
-            confirm({...params, periodAppFilter: '', viewAppBoardFilter: '',
+            confirm({...filters, periodAppFilter: '', viewAppBoardFilter: '',
               stateAppItemsFilter: ''});
           }}
         >Очистить</Button>
@@ -119,7 +117,7 @@ function FilterApp(props: IFilterApplicationProps) {
           size="small"
           type="button"
           onClick={()=>{
-            confirm({...params,
+            confirm({...filters,
               periodAppFilter, viewAppBoardFilter, stateAppItemsFilter});
           }}
         >Применить</Button>

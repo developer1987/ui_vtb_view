@@ -1,13 +1,16 @@
 {
+  "homepage": "http://developer1987.github.io/ui_vtb_view",
   "name": "car-loan-view-ui",
   "version": "1.0.0",
   "private": true,
   "description": "Front-end для микросервиса Витрина заявок (car-loan-view)",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development PUBLIC_URL=http://localhost:3000 webpack-dev-server --progress",
+    "dev": "cross-env NODE_ENV=development PUBLIC_URL=http://localhost:7777 webpack-dev-server --progress",
     "mock_server": "cross-env PORT=3008 node mock_server.js",
-    "build": "cross-env NODE_ENV=production PUBLIC_URL=$npm_config_PUBLIC_URL webpack "
+    "build": "cross-env NODE_ENV=production PUBLIC_URL=$npm_config_PUBLIC_URL webpack",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "license": "ISC",
   "devDependencies": {
@@ -52,6 +55,7 @@
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
     "file-loader": "^6.1.1",
+    "gh-pages": "^3.1.0",
     "html-webpack-plugin": "^4.5.0",
     "http-proxy-middleware": "^1.0.3",
     "mini-css-extract-plugin": "^0.9.0",
@@ -74,7 +78,7 @@
   },
   "dependencies": {
     "@openvtb/admiral-icons": "^0.2.2",
-    "@openvtb/react-ui-kit": "^0.5.1",
+    "@openvtb/react-ui-kit": "^0.4.0",
     "@types/react-motion": "0.0.29",
     "axios": "^0.21.1",
     "connected-react-router": "^6.8.0",
@@ -99,7 +103,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "remove": "^0.1.5",
-    "styled-components": "^5.2.1",
+    "styled-components": "^5.2.0",
     "uuid": "^3.4.0"
   },
   "browserslist": "> 0.25%, not dead",

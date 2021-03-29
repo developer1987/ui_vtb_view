@@ -6,14 +6,14 @@ import pathApp from './pathApp';
 export default new Config().extend('conf/webpack.common.config.js').merge({
   output: {
     filename: 'js/bundle-[hash:8].js',
-    publicPath: 'http://localhost:3000/'
+    publicPath: 'http://localhost:7777/'
   },
   mode: 'development',
   devtool: 'inline-source-map',
   devServer: {
     contentBase: path.resolve(pathApp.root),
     liveReload: true,
-    port: 3000,
+    port: 7777,
     hot: true,
     https: false,
     inline: true,

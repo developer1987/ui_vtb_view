@@ -20,11 +20,12 @@ import {IProps} from './interfaces';
 import {FilterButton} from '../FilterButton/FilterButton';
 import {ExportListButton} from '../ExportListButton/ExportListButton';
 import {SearchButton} from '../SearchButton/SearchButton';
-import SearchApp from 'src/pages/modals/search-app';
-import FilterApp from 'src/pages/modals/filter-app';
-import {filterParamsDefault, IFilterParams, ISearchParams, searchModalParamsDefault} from '../../data-layer/application/types';
+import {filterParamsDefault, searchModalParamsDefault} from '../../data-layer/application/types';
 import {createChipTagsFromFilters} from 'src/helpers/createChipTagsFromFilters';
-import {ApplicationFilterLabels, ApplicationFilterValues} from 'src/constants/lang';
+import {ApplicationFilter, ApplicationFilterLabels, ApplicationFilterValues} from 'src/constants/lang';
+import FilterApp from 'src/pages/modals/filter-app/filterApp';
+import SearchApp from 'src/pages/modals/search-app/searchApp';
+import _ from 'lodash';
 
 function DataTable(props: IProps) {
   const {caption, headerElements, dataIsLoading, data, actions, method,
@@ -41,10 +42,10 @@ function DataTable(props: IProps) {
   const [searchModalOpen, setSearchModalOpen] = useState<any>({opened: false});
   const [filterModalOpen, setFilterModalOpen] = useState<any>({opened: false});
   const [currentApplication, setCurrentApplication] = useState('');
-  const [searchModalParams, setSearchModalParams] =
-  useState<ISearchParams>(searchModalParamsDefault);
-  const [filterModalParams, setFilterModalParams] =
-  useState<IFilterParams>(filterParamsDefault);
+  // const [searchModalParams, setSearchModalParams] =
+  // useState<ISearchParams>(searchModalParamsDefault);
+  // const [filterModalParams, setFilterModalParams] =
+  // useState<IFilterParams>(filterParamsDefault);
   const [rightPanelParams, setRightPanelParams] = useState<any>({
     show: false
   });
@@ -52,9 +53,10 @@ function DataTable(props: IProps) {
     size: 10,
     sort: 'number,desc'
   });
+  const [filters, setAllFilters] = useState<ApplicationFilter>(_.merge(searchModalParamsDefault, filterParamsDefault));
 
   const listData = createChipTagsFromFilters(
-      searchModalParams,
+      filters,
       ApplicationFilterLabels,
       ApplicationFilterValues,
   );
@@ -78,18 +80,26 @@ function DataTable(props: IProps) {
     exportFromJSON({data, fileName, exportType});
   };
 
+  const setNewFilterParams = (params: ApplicationFilter) => {
+    setAllFilters({...filters, ...params});
+  };
+
   const removeFilter = (id: string) => {
     debugger;
     const obj = JSON.parse(id);
-    const paramSysname: keyof ISearchParams = obj['key'];
-    searchModalParams[paramSysname] = '';
-    setSearchModalParams({...searchModalParams});
+    const paramSysname: keyof ApplicationFilter = obj['key'];
+    if (filters && filters[paramSysname]) {
+      if (paramSysname == 'stateAppItemsFilter') filters[paramSysname]=[];
+      else filters[paramSysname]='';
+    }
+    setAllFilters({...filters});
+    // setSearchModalParams({...searchModalParams});
   };
 
   useEffect(() => {
-    method(Object.assign(pagingParams, {page: currentPage-1}, filterModalParams, searchModalParams));
+    method(Object.assign(pagingParams, {page: currentPage-1}, filters));
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, pagingParams, filterModalParams, searchModalParams]);
+  }, [currentPage, pagingParams, filters]);
 
   return (
     <>
@@ -227,19 +237,21 @@ function DataTable(props: IProps) {
         </div>
       </Wrapper>
       {searchModalOpen.opened && <SearchApp
-        params={searchModalParams}
+        filters={filters}
         opened={searchModalOpen.opened}
         onCloseRequest={setSearchModalOpen}
-        confirm={(params: any) => {
-          setSearchModalParams(params);
+        confirm={(filters: ApplicationFilter) => {
+          // setSearchModalParams(params);
+          setNewFilterParams(filters);
           setSearchModalOpen({opened: false});
         }}/>}
       {filterModalOpen.opened && <FilterApp
-        params={filterModalParams}
+        filters={filters}
         opened={filterModalOpen.opened}
         onCloseRequest={setFilterModalOpen}
-        confirm={(params: any) => {
-          setFilterModalParams(params);
+        confirm={(filters: ApplicationFilter) => {
+          // setFilterModalParams(filters);
+          setNewFilterParams(filters);
           setFilterModalOpen({opened: false});
         }}/>}
     </>

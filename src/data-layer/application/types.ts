@@ -1,3 +1,5 @@
+import {StateAppFilter} from 'src/constants/lang';
+
 export interface IApplication {
   uuid: string
   id: string
@@ -61,7 +63,7 @@ export interface stateAppFilter {
 export interface IFilterParams {
   periodAppFilter: string
   viewAppBoardFilter: string
-  stateAppItemsFilter: stateAppFilter[]
+  stateAppItemsFilter: StateAppFilter[]
 }
 export interface ISearchParams {
   documentNumberSearch?: string
@@ -80,10 +82,9 @@ export const searchModalParamsDefault: ISearchParams = {
 };
 
 export const filterParamsDefault: IFilterParams = {
-  periodAppFilter: 'intervalDateAll',
+  periodAppFilter: '',
   viewAppBoardFilter: 'viewAppBoard',
-  stateAppItemsFilter: [{label: 'Все',
-    value: 'stateAll'}],
+  stateAppItemsFilter: [],
 };
 
 type GetApplication = {

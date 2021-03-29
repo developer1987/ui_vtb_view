@@ -1,12 +1,12 @@
-type IntervalDateFilter = 'intevalDateAll' |
-  'intevalDateToday' | 'intevalDateWeek' | 'intevalDateMonth';
+type IntervalDateFilter = 'intervalDateAll' |
+  'intervalDateToday' | 'intervalDateWeek' | 'intervalDateMonth';
 
 export const IntervalDateFilterMap:
   { [K in IntervalDateFilter]: string } = {
-    intevalDateAll: 'Все',
-    intevalDateToday: 'Сегодня',
-    intevalDateWeek: 'Неделя',
-    intevalDateMonth: 'Месяц',
+    intervalDateAll: 'Все',
+    intervalDateToday: 'Сегодня',
+    intervalDateWeek: 'Неделя',
+    intervalDateMonth: 'Месяц',
   };
 
 interface ViewAppFilter {
@@ -21,8 +21,8 @@ export const ViewAppMap: {
     viewAppTable: 'Таблица',
   };
 
-type StateAppFilter = 'stateHardCancel' | 'approveRM' | 'stateVerificationOD' |
-   'stateDealApproved' | 'stateCreditIssue';
+export type StateAppFilter = 'stateHardCancel' | 'approveRM' |
+  'stateVerificationOD' | 'stateDealApproved' | 'stateCreditIssue';
 
 export const StateAppFilterMap: { [K in StateAppFilter]: string } = {
   stateHardCancel: 'Жесткий отказ',
@@ -33,11 +33,14 @@ export const StateAppFilterMap: { [K in StateAppFilter]: string } = {
 };
 
 export interface ApplicationFilter {
-  documentNumberSearch: string,
-  clientLastNameSearch: string,
-  clientFirstNameSearch: string,
-  clientMiddleNameSearch: string,
-  clientBirthdaySearch: string,
+  documentNumberSearch?: string,
+  clientLastNameSearch?: string,
+  clientFirstNameSearch?: string,
+  clientMiddleNameSearch?: string,
+  clientBirthdaySearch?: string,
+  periodAppFilter?: string,
+  viewAppBoardFilter?: string
+  stateAppItemsFilter?: StateAppFilter[],
 }
 
 export const ApplicationFilterLabels: {
@@ -48,6 +51,9 @@ export const ApplicationFilterLabels: {
   clientFirstNameSearch: 'Имя',
   clientMiddleNameSearch: 'Отчество',
   clientBirthdaySearch: 'Дата рождения',
+  periodAppFilter: 'Период',
+  viewAppBoardFilter: 'Отображение заявок',
+  stateAppItemsFilter: 'Состояние',
 };
 
 export const ApplicationFilterValues: {
@@ -58,4 +64,7 @@ export const ApplicationFilterValues: {
   clientFirstNameSearch: {},
   clientMiddleNameSearch: {},
   clientBirthdaySearch: {},
+  periodAppFilter: IntervalDateFilterMap,
+  viewAppBoardFilter: ViewAppMap,
+  stateAppItemsFilter: StateAppFilterMap,
 };

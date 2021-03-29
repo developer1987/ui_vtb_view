@@ -14,7 +14,7 @@ import pathApp from './pathApp';
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
 
-const publicUrl = process.env.PUBLIC_URL || 'http://localhost:3000';
+const publicUrl = process.env.PUBLIC_URL || 'http://localhost:7777';
 
 export default new Config().merge({
   entry: 'src/index.ts',

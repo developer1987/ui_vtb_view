@@ -1,27 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import {Modal, Button, Input} from '@openvtb/react-ui-kit';
 import {Col, Row} from 'src/components/layout';
-import {ISearchParams} from 'src/data-layer/application/types';
+import {ApplicationFilter} from 'src/constants/lang';
 
 interface IAppSearch {
-  params: ISearchParams
+  filters: ApplicationFilter
   opened: boolean
   confirm: any
   onCloseRequest: any
 }
 
 function SearchApp(props: IAppSearch) {
-  const {params, opened, confirm, onCloseRequest} = props;
+  const {filters, opened, confirm, onCloseRequest} = props;
   const [documentNumberSearch, setDocumentNumberSearch] =
-  useState(params.documentNumberSearch);
+  useState(filters.documentNumberSearch);
   const [clientLastNameSearch, setClientLastNameSearch] =
-  useState(params.clientLastNameSearch);
+  useState(filters.clientLastNameSearch);
   const [clientFirstNameSearch, setClientFirstNameSearch] =
-  useState(params.clientFirstNameSearch);
+  useState(filters.clientFirstNameSearch);
   const [clientMiddleNameSearch, setClientMiddleNameSearch] =
-  useState(params.clientMiddleNameSearch);
+  useState(filters.clientMiddleNameSearch);
   const [clientBirthdaySearch, setClientBirthdaySearch] =
-  useState(params.clientBirthdaySearch);
+  useState(filters.clientBirthdaySearch);
 
   useEffect(() => {
     document.querySelector('#edBirthDay').setAttribute('type', 'date');
@@ -89,7 +89,7 @@ function SearchApp(props: IAppSearch) {
         <Button
           kind="secondary" size="small" type="button"
           onClick={()=> {
-            confirm({...params, documentNumberSearch: '',
+            confirm({...filters, documentNumberSearch: '',
               clientLastNameSearch: '', clientFirstNameSearch: '',
               clientMiddleNameSearch: '',
               clientBirthdaySearch: ''});
@@ -99,7 +99,7 @@ function SearchApp(props: IAppSearch) {
           style={{marginLeft: '16px'}}
           kind="primary" size="small" type="button"
           onClick={()=>{
-            confirm({...params, documentNumberSearch, clientLastNameSearch,
+            confirm({...filters, documentNumberSearch, clientLastNameSearch,
               clientFirstNameSearch, clientMiddleNameSearch,
               clientBirthdaySearch});
           }}

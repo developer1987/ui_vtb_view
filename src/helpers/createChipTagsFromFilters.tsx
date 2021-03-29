@@ -1,5 +1,6 @@
 import {IItemChipTag} from '@openvtb/react-ui-kit';
 import {mapKeyToString} from './mapKeyToString';
+import {itemsToValues} from './selectItems';
 
 export function createChipTagsFromFilters<
   T,
@@ -9,7 +10,7 @@ export function createChipTagsFromFilters<
   }
 >(filters: T, keyLabels: L, valueLabels: V) {
   const listData: IItemChipTag[] = [];
-
+  debugger;
   Object.entries(filters).forEach(([key, value]) => {
     if (typeof value === 'boolean' && value) {
       return listData.push({
@@ -28,8 +29,8 @@ export function createChipTagsFromFilters<
       });
     }
 
-    if (Array.isArray(value)) {
-      value.forEach((item) => {
+    if (Array.isArray(value) && value.length) {
+      itemsToValues(value).forEach((item) => {
         listData.push({
           id: JSON.stringify({key, value: item}),
           label: `${mapKeyToString(key, keyLabels)}: ${mapKeyToString(
