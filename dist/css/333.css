@@ -1,0 +1,64 @@
+@font-face {
+    font-family: 'Inter';
+    src: url(http://localhost:7777/Inter-Black.6ccaa13.woff) format('woff');    
+    font-style: normal;
+    font-weight: 900;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url(http://localhost:7777/Inter-ExtraBold.6b45b4b.woff) format('woff');
+    font-style: normal;
+    font-weight: 800;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url(http://localhost:7777/Inter-Bold.4f5014f.woff) format('woff');
+    font-style: normal;
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url(http://localhost:7777/Inter-SemiBold.b11d696.woff) format('woff');
+    font-style: normal;
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url(http://localhost:7777/Inter-Medium.00f09af.woff) format('woff');
+    font-style: normal;
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url(http://localhost:7777/Inter-Regular.bff2ecf.woff) format('woff');
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url(http://localhost:7777/Inter-Light.7679780.woff) format('woff');
+    font-style: normal;
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url(http://localhost:7777/Inter-ExtraLight.f8161fa.woff) format('woff');
+    font-style: normal;
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url(http://localhost:7777/Inter-Thin.60296ab.woff) format('woff');
+    font-style: normal;
+    font-weight: 100;
+}
+
+/*# sourceMappingURL=333.css.map*/
