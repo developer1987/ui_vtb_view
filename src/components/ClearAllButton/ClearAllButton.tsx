@@ -1,16 +1,15 @@
 import styled from 'styled-components';
-import filterIcon from '@openvtb/admiral-icons/build/system/FilterOutline.svg';
+import deleteIcon from '@openvtb/admiral-icons/build/system/DeleteOutline.svg';
 
-export const FilterButton = styled.button.attrs({
+export const ClearAllButton = styled.button.attrs({
   type: 'button',
-  children: 'Фильтры'
+  children: 'Очистить всё'
 })`
   appearance: none;
   font: revert;
   padding: 0;
   background: none;
   border: 0;
-  margin-left: 30px;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -22,7 +21,7 @@ export const FilterButton = styled.button.attrs({
     margin-right: 10px;
     width: 20px;
     height: 20px;
-    background: no-repeat center url(${filterIcon});
+    background: no-repeat center url(${deleteIcon});
     filter: invert(52%) sepia(4%) saturate(789%) hue-rotate(185deg)
       brightness(94%) contrast(93%);
   }

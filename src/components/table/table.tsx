@@ -20,6 +20,7 @@ import {IProps} from './interfaces';
 import {FilterButton} from '../FilterButton/FilterButton';
 import {ExportListButton} from '../ExportListButton/ExportListButton';
 import {SearchButton} from '../SearchButton/SearchButton';
+import {ClearAllButton} from '../ClearAllButton/ClearAllButton';
 import {filterParamsDefault, searchModalParamsDefault} from '../../data-layer/application/types';
 import {createChipTagsFromFilters} from 'src/helpers/createChipTagsFromFilters';
 import {ApplicationFilter, ApplicationFilterLabels, ApplicationFilterValues} from 'src/constants/lang';
@@ -42,10 +43,6 @@ function DataTable(props: IProps) {
   const [searchModalOpen, setSearchModalOpen] = useState<any>({opened: false});
   const [filterModalOpen, setFilterModalOpen] = useState<any>({opened: false});
   const [currentApplication, setCurrentApplication] = useState('');
-  // const [searchModalParams, setSearchModalParams] =
-  // useState<ISearchParams>(searchModalParamsDefault);
-  // const [filterModalParams, setFilterModalParams] =
-  // useState<IFilterParams>(filterParamsDefault);
   const [rightPanelParams, setRightPanelParams] = useState<any>({
     show: false
   });
@@ -93,7 +90,6 @@ function DataTable(props: IProps) {
       else filters[paramSysname]='';
     }
     setAllFilters({...filters});
-    // setSearchModalParams({...searchModalParams});
   };
 
   useEffect(() => {
@@ -126,6 +122,7 @@ function DataTable(props: IProps) {
           onRemoveItem={(id) => removeFilter(id)}
         />
         <SearchPanel>
+          <ClearAllButton onClick={() => setNewFilterParams({})}/>
           <FilterButton onClick={() => setFilterModalOpen({opened: true})}/>
           <ExportListButton onClick={() => exportDataToXLS(content, '', 'xls')}/>
           <SearchButton onClick={() => setSearchModalOpen({opened: true})}/>
@@ -241,7 +238,6 @@ function DataTable(props: IProps) {
         opened={searchModalOpen.opened}
         onCloseRequest={setSearchModalOpen}
         confirm={(filters: ApplicationFilter) => {
-          // setSearchModalParams(params);
           setNewFilterParams(filters);
           setSearchModalOpen({opened: false});
         }}/>}
@@ -250,7 +246,6 @@ function DataTable(props: IProps) {
         opened={filterModalOpen.opened}
         onCloseRequest={setFilterModalOpen}
         confirm={(filters: ApplicationFilter) => {
-          // setFilterModalParams(filters);
           setNewFilterParams(filters);
           setFilterModalOpen({opened: false});
         }}/>}
