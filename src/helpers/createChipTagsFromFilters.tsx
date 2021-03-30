@@ -10,7 +10,6 @@ export function createChipTagsFromFilters<
   }
 >(filters: T, keyLabels: L, valueLabels: V) {
   const listData: IItemChipTag[] = [];
-  debugger;
   Object.entries(filters).forEach(([key, value]) => {
     if (typeof value === 'boolean' && value) {
       return listData.push({

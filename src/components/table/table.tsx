@@ -1,14 +1,13 @@
 /* eslint-disable max-len */
 import React, {useEffect, useState} from 'react';
-import styled from 'styled-components';
 import exportFromJSON, {ExportType} from 'export-from-json';
 import {v4 as uuidv4} from 'uuid';
 import * as Actions from 'src/data-layer/system/actionCreators';
 import {connect} from 'react-redux';
-import {PaginationComplex, Spinner, Link, Chips} from '@openvtb/react-ui-kit';
+import {PaginationComplex, Spinner, Link} from '@openvtb/react-ui-kit';
 import {
   Wrapper, Table, TitleRow, Caption, RowRight, SearchPanel, THead, TBody, TRow,
-  THeadColumn, TRowColumn, ResizeHandle, Icon, Nodata} from './style';
+  THeadColumn, TRowColumn, ResizeHandle, Icon, Nodata, StyledChips} from './style';
 import RightPanel from './rightPanel';
 const styles = require('./custom.css');
 import arrowDownIcon from
@@ -58,10 +57,6 @@ function DataTable(props: IProps) {
       ApplicationFilterValues,
   );
 
-  const StyledChips = styled(Chips.Tags)`
-    margin-top: -12px;
-  `;
-
   const makeSort = (fieldName: string) => {
     const direction = sortDirection[fieldName] === 'asc' ? 'desc' : 'asc';
     setSortDirection({
@@ -79,6 +74,14 @@ function DataTable(props: IProps) {
 
   const setNewFilterParams = (params: ApplicationFilter) => {
     setAllFilters({...filters, ...params});
+  };
+
+  const clearAllParams = () => {
+    debugger;
+    _.forIn(filters, function(value, key) {
+      filters[key] = _.isArray(value) ? [] : '';
+    });
+    setNewFilterParams({...filters});
   };
 
   const removeFilter = (id: string) => {
@@ -122,7 +125,7 @@ function DataTable(props: IProps) {
           onRemoveItem={(id) => removeFilter(id)}
         />
         <SearchPanel>
-          <ClearAllButton onClick={() => setNewFilterParams({})}/>
+          <ClearAllButton onClick={() => clearAllParams()}/>
           <FilterButton onClick={() => setFilterModalOpen({opened: true})}/>
           <ExportListButton onClick={() => exportDataToXLS(content, '', 'xls')}/>
           <SearchButton onClick={() => setSearchModalOpen({opened: true})}/>
