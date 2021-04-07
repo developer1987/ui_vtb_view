@@ -22,7 +22,7 @@ import {SearchButton} from '../SearchButton/SearchButton';
 import {ClearAllButton} from '../ClearAllButton/ClearAllButton';
 import {filterParamsDefault, searchModalParamsDefault} from '../../data-layer/application/types';
 import {createChipTagsFromFilters} from 'src/helpers/createChipTagsFromFilters';
-import {ApplicationFilter, ApplicationFilterLabels, ApplicationFilterValues} from 'src/constants/lang';
+import {ApplicationFilter, IChipsParams, IChipsParamsLabels, IChipsParamsValues} from 'src/constants/lang';
 import FilterApp from 'src/pages/modals/filter-app/filterApp';
 import SearchApp from 'src/pages/modals/search-app/searchApp';
 import _ from 'lodash';
@@ -50,11 +50,22 @@ function DataTable(props: IProps) {
     sort: 'number,desc'
   });
   const [filters, setAllFilters] = useState<ApplicationFilter>(_.merge(searchModalParamsDefault, filterParamsDefault));
+  const [chips, setChips] = useState<IChipsParams>({});
+
+  const chipsDefault : IChipsParams = {
+    documentNumberSearch: '',
+    clientLastNameSearch: '',
+    clientFirstNameSearch: '',
+    clientMiddleNameSearch: '',
+    clientBirthdaySearch: '',
+    periodAppFilter: ['intervalDateToday', 'intervalDateWeek', 'intervalDateMonth'],
+    stateAppItemsFilter: [],
+  };
 
   const listData = createChipTagsFromFilters(
-      filters,
-      ApplicationFilterLabels,
-      ApplicationFilterValues,
+      chips,
+      IChipsParamsLabels,
+      IChipsParamsValues,
   );
 
   const makeSort = (fieldName: string) => {
@@ -67,6 +78,19 @@ function DataTable(props: IProps) {
     });
   };
 
+  const getChips = (chipsDefault: {[key: string]: any}, modalParams: {[key: string]: any}) => {
+    const filtered = Object.keys(modalParams).filter((k) => ~Object.keys(chipsDefault).indexOf(k));
+    const query: {[key: string]: any} = {};
+    filtered.forEach((k) => {
+      if ((chipsDefault[k] && _.isArray(chipsDefault[k]) &&
+      ((chipsDefault[k].length > 0 && chipsDefault[k].indexOf(modalParams[k]) != -1) || chipsDefault[k].length == 0)) ||
+      !chipsDefault[k]) {
+        query[k] = modalParams[k];
+      }
+    });
+    return query;
+  };
+
   const exportDataToXLS = (data: any, filename: string, exportType: ExportType) => {
     const fileName = uuidv4();
     exportFromJSON({data, fileName, exportType});
@@ -74,25 +98,29 @@ function DataTable(props: IProps) {
 
   const setNewFilterParams = (params: ApplicationFilter) => {
     setAllFilters({...filters, ...params});
+    setChips({...getChips(chipsDefault, params)});
   };
 
-  const clearAllParams = () => {
-    debugger;
-    _.forIn(filters, function(value, key) {
-      filters[key] = _.isArray(value) ? [] : '';
-    });
-    setNewFilterParams({...filters});
-  };
-
-  const removeFilter = (id: string) => {
-    debugger;
+  const removeFilter = (id: string, filters: any) => {
     const obj = JSON.parse(id);
-    const paramSysname: keyof ApplicationFilter = obj['key'];
-    if (filters && filters[paramSysname]) {
-      if (paramSysname == 'stateAppItemsFilter') filters[paramSysname]=[];
-      else filters[paramSysname]='';
+    const param: keyof ApplicationFilter = obj['key'];
+    if (typeof filters[param] === 'boolean') {
+      filters[param] = !obj['value'];
+    }
+
+    if (typeof filters[param] === 'string') {
+      filters[param] = '';
+    }
+    if (param == 'periodAppFilter') {
+      filters[param] = 'intervalDateAll';
+    }
+
+
+    if (Array.isArray(filters[param])) {
+      filters[param] = filters[param].filter((item: any) => obj['value'] != item['value']);
     }
     setAllFilters({...filters});
+    setChips({...getChips(chipsDefault, filters)});
   };
 
   useEffect(() => {
@@ -122,10 +150,10 @@ function DataTable(props: IProps) {
         <StyledChips
           items={listData}
           size={'small'}
-          onRemoveItem={(id) => removeFilter(id)}
+          onRemoveItem={(id) => removeFilter(id, filters)}
         />
         <SearchPanel>
-          <ClearAllButton onClick={() => clearAllParams()}/>
+          <ClearAllButton onClick={() => setNewFilterParams({..._.merge(searchModalParamsDefault, filterParamsDefault)})}/>
           <FilterButton onClick={() => setFilterModalOpen({opened: true})}/>
           <ExportListButton onClick={() => exportDataToXLS(content, '', 'xls')}/>
           <SearchButton onClick={() => setSearchModalOpen({opened: true})}/>

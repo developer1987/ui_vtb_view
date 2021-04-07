@@ -24,7 +24,10 @@ function SearchApp(props: IAppSearch) {
   useState(filters.clientBirthdaySearch);
 
   useEffect(() => {
-    document.querySelector('#edBirthDay').setAttribute('type', 'date');
+    const edBirthDay = document.querySelector('#edBirthDay');
+    if (edBirthDay) {
+      edBirthDay.setAttribute('type', 'date');
+    }
   }, []);
 
   return (

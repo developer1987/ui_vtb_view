@@ -3,7 +3,7 @@ import deleteIcon from '@openvtb/admiral-icons/build/system/DeleteOutline.svg';
 
 export const ClearAllButton = styled.button.attrs({
   type: 'button',
-  children: 'Очистить всё'
+  children: 'Очистить фильтры'
 })`
   appearance: none;
   font: revert;

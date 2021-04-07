@@ -82,8 +82,8 @@ export const searchModalParamsDefault: ISearchParams = {
 };
 
 export const filterParamsDefault: IFilterParams = {
-  periodAppFilter: '',
-  viewAppBoardFilter: 'viewAppBoard',
+  periodAppFilter: 'intervalDateAll',
+  viewAppBoardFilter: 'viewAppTable',
   stateAppItemsFilter: [],
 };
 

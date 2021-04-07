@@ -43,8 +43,18 @@ export interface ApplicationFilter {
   stateAppItemsFilter?: StateAppFilter[],
 }
 
-export const ApplicationFilterLabels: {
-  [K in keyof ApplicationFilter]: string;
+export interface IChipsParams {
+  documentNumberSearch?: string,
+  clientLastNameSearch?: string,
+  clientFirstNameSearch?: string,
+  clientMiddleNameSearch?: string,
+  clientBirthdaySearch?: string,
+  periodAppFilter?: string[],
+  stateAppItemsFilter?: StateAppFilter[],
+}
+
+export const IChipsParamsLabels: {
+  [K in keyof IChipsParams]: string;
 } = {
   documentNumberSearch: 'Номер заявки',
   clientLastNameSearch: 'Фамилия',
@@ -52,12 +62,11 @@ export const ApplicationFilterLabels: {
   clientMiddleNameSearch: 'Отчество',
   clientBirthdaySearch: 'Дата рождения',
   periodAppFilter: 'Период',
-  viewAppBoardFilter: 'Отображение заявок',
   stateAppItemsFilter: 'Состояние',
 };
 
-export const ApplicationFilterValues: {
-  [K in keyof ApplicationFilter]: { [key: string]: string };
+export const IChipsParamsValues: {
+  [K in keyof IChipsParams]: { [key: string]: string };
 } = {
   documentNumberSearch: {},
   clientLastNameSearch: {},
@@ -65,6 +74,5 @@ export const ApplicationFilterValues: {
   clientMiddleNameSearch: {},
   clientBirthdaySearch: {},
   periodAppFilter: IntervalDateFilterMap,
-  viewAppBoardFilter: ViewAppMap,
   stateAppItemsFilter: StateAppFilterMap,
 };
