@@ -1,4 +1,5 @@
 import styled, {css} from 'styled-components';
+import {Chips, DEFAULT_THEME} from '@openvtb/react-ui-kit';
 
 export const TitleRow = styled.div`
   margin: auto 24px;
@@ -204,7 +205,7 @@ export const RightPanelHeader = styled.div`
   flex-direction: row;
   justify-content: space-between;
 `;
-import {DEFAULT_THEME} from '@openvtb/react-ui-kit';
+
 
 export const Button = styled.button<{svg: string}>`
   ${({theme, svg}) => css`
@@ -318,4 +319,8 @@ flex: none;
 order: 0;
 flex-grow: 0;
 margin: 0px 10px
+`;
+
+export const StyledChips = styled(Chips.Tags)`
+    margin-top: -12px;
 `;

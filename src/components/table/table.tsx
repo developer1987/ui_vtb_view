@@ -1,14 +1,13 @@
 /* eslint-disable max-len */
 import React, {useEffect, useState} from 'react';
-import styled from 'styled-components';
 import exportFromJSON, {ExportType} from 'export-from-json';
 import {v4 as uuidv4} from 'uuid';
 import * as Actions from 'src/data-layer/system/actionCreators';
 import {connect} from 'react-redux';
-import {PaginationComplex, Spinner, Link, Chips} from '@openvtb/react-ui-kit';
+import {PaginationComplex, Spinner, Link} from '@openvtb/react-ui-kit';
 import {
   Wrapper, Table, TitleRow, Caption, RowRight, SearchPanel, THead, TBody, TRow,
-  THeadColumn, TRowColumn, ResizeHandle, Icon, Nodata} from './style';
+  THeadColumn, TRowColumn, ResizeHandle, Icon, Nodata, StyledChips} from './style';
 import RightPanel from './rightPanel';
 const styles = require('./custom.css');
 import arrowDownIcon from
@@ -20,9 +19,10 @@ import {IProps} from './interfaces';
 import {FilterButton} from '../FilterButton/FilterButton';
 import {ExportListButton} from '../ExportListButton/ExportListButton';
 import {SearchButton} from '../SearchButton/SearchButton';
+import {ClearAllButton} from '../ClearAllButton/ClearAllButton';
 import {filterParamsDefault, searchModalParamsDefault} from '../../data-layer/application/types';
 import {createChipTagsFromFilters} from 'src/helpers/createChipTagsFromFilters';
-import {ApplicationFilter, ApplicationFilterLabels, ApplicationFilterValues} from 'src/constants/lang';
+import {ApplicationFilter, IChipsParams, IChipsParamsLabels, IChipsParamsValues} from 'src/constants/lang';
 import FilterApp from 'src/pages/modals/filter-app/filterApp';
 import SearchApp from 'src/pages/modals/search-app/searchApp';
 import _ from 'lodash';
@@ -42,10 +42,6 @@ function DataTable(props: IProps) {
   const [searchModalOpen, setSearchModalOpen] = useState<any>({opened: false});
   const [filterModalOpen, setFilterModalOpen] = useState<any>({opened: false});
   const [currentApplication, setCurrentApplication] = useState('');
-  // const [searchModalParams, setSearchModalParams] =
-  // useState<ISearchParams>(searchModalParamsDefault);
-  // const [filterModalParams, setFilterModalParams] =
-  // useState<IFilterParams>(filterParamsDefault);
   const [rightPanelParams, setRightPanelParams] = useState<any>({
     show: false
   });
@@ -54,16 +50,23 @@ function DataTable(props: IProps) {
     sort: 'number,desc'
   });
   const [filters, setAllFilters] = useState<ApplicationFilter>(_.merge(searchModalParamsDefault, filterParamsDefault));
+  const [chips, setChips] = useState<IChipsParams>({});
+
+  const chipsDefault : IChipsParams = {
+    documentNumberSearch: '',
+    clientLastNameSearch: '',
+    clientFirstNameSearch: '',
+    clientMiddleNameSearch: '',
+    clientBirthdaySearch: '',
+    periodAppFilter: ['intervalDateToday', 'intervalDateWeek', 'intervalDateMonth'],
+    stateAppItemsFilter: [],
+  };
 
   const listData = createChipTagsFromFilters(
-      filters,
-      ApplicationFilterLabels,
-      ApplicationFilterValues,
+      chips,
+      IChipsParamsLabels,
+      IChipsParamsValues,
   );
-
-  const StyledChips = styled(Chips.Tags)`
-    margin-top: -12px;
-  `;
 
   const makeSort = (fieldName: string) => {
     const direction = sortDirection[fieldName] === 'asc' ? 'desc' : 'asc';
@@ -75,6 +78,19 @@ function DataTable(props: IProps) {
     });
   };
 
+  const getChips = (chipsDefault: {[key: string]: any}, modalParams: {[key: string]: any}) => {
+    const filtered = Object.keys(modalParams).filter((k) => ~Object.keys(chipsDefault).indexOf(k));
+    const query: {[key: string]: any} = {};
+    filtered.forEach((k) => {
+      if ((chipsDefault[k] && _.isArray(chipsDefault[k]) &&
+      ((chipsDefault[k].length > 0 && chipsDefault[k].indexOf(modalParams[k]) != -1) || chipsDefault[k].length == 0)) ||
+      !chipsDefault[k]) {
+        query[k] = modalParams[k];
+      }
+    });
+    return query;
+  };
+
   const exportDataToXLS = (data: any, filename: string, exportType: ExportType) => {
     const fileName = uuidv4();
     exportFromJSON({data, fileName, exportType});
@@ -82,18 +98,29 @@ function DataTable(props: IProps) {
 
   const setNewFilterParams = (params: ApplicationFilter) => {
     setAllFilters({...filters, ...params});
+    setChips({...getChips(chipsDefault, params)});
   };
 
-  const removeFilter = (id: string) => {
-    debugger;
+  const removeFilter = (id: string, filters: any) => {
     const obj = JSON.parse(id);
-    const paramSysname: keyof ApplicationFilter = obj['key'];
-    if (filters && filters[paramSysname]) {
-      if (paramSysname == 'stateAppItemsFilter') filters[paramSysname]=[];
-      else filters[paramSysname]='';
+    const param: keyof ApplicationFilter = obj['key'];
+    if (typeof filters[param] === 'boolean') {
+      filters[param] = !obj['value'];
+    }
+
+    if (typeof filters[param] === 'string') {
+      filters[param] = '';
+    }
+    if (param == 'periodAppFilter') {
+      filters[param] = 'intervalDateAll';
+    }
+
+
+    if (Array.isArray(filters[param])) {
+      filters[param] = filters[param].filter((item: any) => obj['value'] != item['value']);
     }
     setAllFilters({...filters});
-    // setSearchModalParams({...searchModalParams});
+    setChips({...getChips(chipsDefault, filters)});
   };
 
   useEffect(() => {
@@ -123,9 +150,10 @@ function DataTable(props: IProps) {
         <StyledChips
           items={listData}
           size={'small'}
-          onRemoveItem={(id) => removeFilter(id)}
+          onRemoveItem={(id) => removeFilter(id, filters)}
         />
         <SearchPanel>
+          <ClearAllButton onClick={() => setNewFilterParams({..._.merge(searchModalParamsDefault, filterParamsDefault)})}/>
           <FilterButton onClick={() => setFilterModalOpen({opened: true})}/>
           <ExportListButton onClick={() => exportDataToXLS(content, '', 'xls')}/>
           <SearchButton onClick={() => setSearchModalOpen({opened: true})}/>
@@ -241,7 +269,6 @@ function DataTable(props: IProps) {
         opened={searchModalOpen.opened}
         onCloseRequest={setSearchModalOpen}
         confirm={(filters: ApplicationFilter) => {
-          // setSearchModalParams(params);
           setNewFilterParams(filters);
           setSearchModalOpen({opened: false});
         }}/>}
@@ -250,7 +277,6 @@ function DataTable(props: IProps) {
         opened={filterModalOpen.opened}
         onCloseRequest={setFilterModalOpen}
         confirm={(filters: ApplicationFilter) => {
-          // setFilterModalParams(filters);
           setNewFilterParams(filters);
           setFilterModalOpen({opened: false});
         }}/>}
